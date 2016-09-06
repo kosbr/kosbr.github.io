@@ -3,37 +3,94 @@
 ---
 @charset "utf-8";
 
-// Our variables
-$base-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-$base-font-size:   16px;
-$base-font-weight: 400;
-$small-font-size:  $base-font-size * 0.875;
-$base-line-height: 1.5;
+/* path to glyphicons */
+$icon-font-path: "/bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 
-$spacing-unit:     30px;
+.cool-font {
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
+}
 
-$text-color:       #111;
-$background-color: #fdfdfd;
-$brand-color:      #2a7ae2;
+.post-link {
+  font-size: 25px;
+}
 
-$grey-color:       #828282;
-$grey-color-light: lighten($grey-color, 40%);
-$grey-color-dark:  darken($grey-color, 25%);
+.post-date {
+  color: green;
+}
 
-// Width of the content area
-$content-width:    800px;
+.post-more {
+  font-size: 21px;
+}
 
-$on-palm:          600px;
-$on-laptop:        800px;
+.post-tag {
+  color: darkred;
+}
 
-// Minima also includes a mixin for defining media queries.
-// Use media queries like this:
-// @include media-query($on-palm) {
-//     .wrapper {
-//         padding-right: $spacing-unit / 2;
-//         padding-left: $spacing-unit / 2;
-//     }
-// }
+.post-item {
+  margin-bottom: 45px;
+}
 
-// Import partials from the `minima` theme.
-@import "minima";
+.blog-desc {
+  margin-top: 30px;
+  color: #5e5e5e;
+}
+
+.contact {
+  margin: 15px;
+  cursor: pointer;
+}
+
+.contact:hover, .contact:visited {
+  text-decoration: none;
+}
+
+@mixin media-query($device) {
+    @media screen and (max-width: $device) {
+        @content;
+    }
+}
+
+.main-info {
+  margin-left: 30px;
+}
+
+.tag-post-label {
+  margin-right: 30px;
+}
+
+.footer {
+  margin-top: 40px;
+}
+
+.jumbotron {
+  width: 450px;
+}
+
+.transparent.jumbotron {
+  background-color: transparent;
+}
+
+.vcenter {
+  display: flex;
+  align-items: center;
+}
+
+.framework-logo {
+  height: 30px;
+  float: right;
+}
+
+.width-80 {
+  width: 80%;
+}
+
+.tag-btn.btn {
+  font-size: 15px;
+}
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+        "css/syntax-highlighting",
+        "css/nav"
+;

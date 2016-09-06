@@ -1,0 +1,22 @@
+<header>
+    <div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header"><a class="navbar-brand" href="/">Bryazgin Konstantin's Blog</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+                    <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                        class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse navbar-menubuilder">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="{% if page.url == '/about/' %} active {% endif %}"><a href="/about/">About</a>
+                    </li>
+                    <li class="{% if page.url == '/cv/' %} active {% endif %}"><a href="/cv/">My public CV</a>
+                    </li>
+                    <li class="{% if page.url == '/contact/' %} active {% endif %}"><a href="/contact/">Contact me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,15 +1,23 @@
 ---
-layout: page
+layout: default
 title: About
 permalink: /about/
 ---
+![photo](/images/me.jpg){: class="center-block"}
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+<p class="text-center">
+    Hello, my name is Bryazgin Konstantin. I'm Java developer.
+    Almost every day I deal with different issues I have to solve.
+    Some of them seem to me interesting. Other need a creative way
+    to be done. I've created this blog to write about such issues.
+    Also this blog performs a representative function for employers
+    and partners. </p>
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jekyll" %} /
-[minima](https://github.com/jekyll/minima)
+<p class="text-center">
+    I also have old blog: <a href="http://kosdev.ru" target="_blank">
+    http://kosdev.ru
+</a>
+    in russian.
+</p>
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+

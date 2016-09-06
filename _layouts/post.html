@@ -1,0 +1,22 @@
+---
+layout: default
+---
+<div>
+    <h3>{{ page.title }}</h3>
+
+    <p class="post-date">
+        <time datetime="{{ page.date | date_to_xmlschema }}">
+            {{ page.date | date: "%b %-d, %Y" }}
+        </time>
+    </p>
+
+    <div>
+        {{ content }}
+    </div>
+
+    {% for posttag in page.tags %}
+    <a class="btn btn-success btn-xs tag-btn" href="/tag/{{posttag}}/">
+        #{{ posttag | replace:'-', ' ' }}
+    </a>
+    {% endfor %}
+</div>
