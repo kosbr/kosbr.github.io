@@ -2,14 +2,14 @@
 
     <!--Tags cloud-->
     {% assign tags = site.tags | sort %}
-    <div class="text-center">
+    <section class="text-center">
         <div>Read posts with tag:</div>
         {% for tag in tags %}
-        <a class="btn btn-success btn-xs tag-btn" href="/tag/{{ tag | first | slugify }}/">
-            #{{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
+        <a class="label-size" href="/tag/{{ tag | first | slugify }}/">
+            {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
         </a>
         {% endfor %}
-    </div>
+    </section>
 
     <p class="text-center blog-desc">{{ site.description }}</p>
 
