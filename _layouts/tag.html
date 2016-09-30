@@ -15,11 +15,16 @@ layout: default
             <a class="post-more" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
         </p>
 
-        {% for posttag in post.tags %}
-        <a class="btn btn-success btn-xs tag-btn" href="/tag/{{posttag}}/">
-            #{{ posttag | replace:'-', ' ' }}
-        </a>
-        {% endfor %}
+        <section>
+            {% for posttag in post.tags %}
+
+            <a class="label-size" href="/tag/{{posttag}}/">
+                {{ posttag | replace:'-', ' ' }}
+            </a>
+
+            {% endfor %}
+        </section>
+
     </div>
     {% endfor %}
 </div>
