@@ -1,6 +1,5 @@
 ---
-layout: default
-title: Bryazgin Konstantin
+layout: page
 permalink: /cv/
 ---
 

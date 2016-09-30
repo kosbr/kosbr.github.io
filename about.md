@@ -1,6 +1,5 @@
 ---
-layout: default
-title: About
+layout: page
 permalink: /about/
 ---
 ![photo](/images/me.jpg){: class="center-block"}

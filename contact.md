@@ -1,6 +1,5 @@
 ---
-layout: default
-title: Contact
+layout: page
 permalink: /contact/
 ---
 <div class="jumbotron transparent center-block">
