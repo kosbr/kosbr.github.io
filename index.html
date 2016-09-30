@@ -3,28 +3,31 @@ layout: default
 ---
 
 <div>Тут лого для блога</div>
-<div>
+<main>
     {% for post in paginator.posts %}
-    <div class="post-item">
-        <div>
+    <section class="post-item">
+        <header class="text-center">
             <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </header>
+        <div class="post-date text-center">{{ post.date | date: "%b %-d, %Y" }}</div>
+        <article>{{ post.excerpt }}</article>
+        <div class="text-center">
+            <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
         </div>
-        <div class="post-date">{{ post.date | date: "%b %-d, %Y" }}</div>
-        <p>{{ post.excerpt }}</p>
-        <p>
-            <a class="post-more" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
-        </p>
+        <section>
+            {% for posttag in post.tags %}
 
-        {% for posttag in post.tags %}
-        <a class="btn btn-success btn-xs tag-btn" href="/tag/{{posttag}}/">
-            #{{ posttag | replace:'-', ' ' }}
-        </a>
-        {% endfor %}
-    </div>
+            <a class="label-size" href="/tag/{{posttag}}/">
+                {{ posttag | replace:'-', ' ' }}
+            </a>
+
+            {% endfor %}
+        </section>
+    </section>
     {% endfor %}
 
     {% if paginator.total_pages > 1 %}
-    <div class="text-center">
+    <section class="text-center">
         <nav>
             <ul class="pagination">
                 <li class="page-item {% if paginator.previous_page == nil %} disabled {% endif %}">
@@ -54,6 +57,6 @@ layout: default
                 </li>
             </ul>
         </nav>
-    </div>
+    </section>
     {% endif %}
-</div>
+</main>

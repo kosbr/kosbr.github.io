@@ -1,5 +1,4 @@
 .label-size {
-  float: left;
   margin: 0 0 7px 20px;
   position: relative;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -8,7 +7,7 @@
   text-decoration: none;
   color: #996633;
   text-shadow: 0px 1px 0px rgba(255,255,255,.4);
-  padding: 5px 5px 5px 15px;
+  padding: 5px 5px 5px 20px;
   border-top: 1px solid #d99d38;
   border-right: 1px solid #d99d38;
   border-bottom: 1px solid #d99d38;
@@ -32,8 +31,8 @@
 
 .label-size:before {
   content: '';
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
   background-image: -webkit-linear-gradient(left top, rgb(254, 218, 113), rgb(254, 186, 71));
   background-image: -moz-linear-gradient(left top, rgb(254, 218, 113), rgb(254, 186, 71));
   background-image: -o-linear-gradient(left top, rgb(254, 218, 113), rgb(254, 186, 71));
@@ -42,7 +41,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,StartColorStr='#feda71', EndColorStr='#feba47');
   position: absolute;
   left: -11px;
-  top: 4px;
+  top: 3px;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
@@ -68,7 +67,7 @@
   -moz-box-shadow: 0 2px 0 #faeaba;
   box-shadow: 0 2px 0 #faeaba;
   position: absolute;
-  top: 11px;
+  top: 8px;
   left: -1px;
   z-index: 9999;
 }

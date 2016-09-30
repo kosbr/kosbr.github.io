@@ -2,22 +2,28 @@
 layout: default
 ---
 <div>Тут лого для поста</div>
-<div>
-    <h3 class="post-title">{{ page.title }}</h3>
+<main>
+    <header class="text-center">
+        <h3 class="post-title text-center">{{ page.title }}</h3>
+    </header>
 
-    <p class="post-date">
+    <div class="post-date text-center">
         <time datetime="{{ page.date | date_to_xmlschema }}">
             {{ page.date | date: "%b %-d, %Y" }}
         </time>
-    </p>
-
-    <div>
-        {{ content }}
     </div>
 
-    {% for posttag in page.tags %}
-    <a class="btn btn-success btn-xs tag-btn" href="/tag/{{posttag}}/">
-        #{{ posttag | replace:'-', ' ' }}
-    </a>
-    {% endfor %}
-</div>
+    <article>
+        {{ content }}
+    </article>
+
+    <section>
+        {% for posttag in page.tags %}
+
+        <a class="label-size" href="/tag/{{posttag}}/">
+            {{ posttag | replace:'-', ' ' }}
+        </a>
+
+        {% endfor %}
+    </section>
+</main>
