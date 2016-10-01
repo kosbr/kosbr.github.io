@@ -1,0 +1,30 @@
+.logo {
+  background-image: url('/images/welcome.jpg');
+  background-size: 2500px 1667px;
+  background-position: center;
+  width: 100%;
+  height: 300px;
+  display: table;
+  margin: 0 auto;
+  line-height: 260px;
+  text-align: center;
+}
+
+.intro {
+  display: inline;
+  background-color: #eeeeff;
+  opacity: 0.75;
+  font-family: "Lato", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 20px;
+  text-transform: uppercase;
+  -webkit-animation: get-small  1s 1 ease-in;
+  animation: get-small  1s 1 ease-in;
+  font-size: 90px;
+}
+
+@-webkit-keyframes get-small {
+  from {font-size: 120px;}
+  to {font-size: 90px;}
+}
