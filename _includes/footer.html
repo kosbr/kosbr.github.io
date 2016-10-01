@@ -5,7 +5,7 @@
     <section class="text-center">
         <div>Read posts with tag:</div>
         {% for tag in tags %}
-        <a class="label-size" href="/tag/{{ tag | first | slugify }}/">
+        <a class="blog-tag" href="/tag/{{ tag | first | slugify }}/">
             {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
         </a>
         {% endfor %}

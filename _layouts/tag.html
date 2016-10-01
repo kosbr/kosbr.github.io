@@ -3,7 +3,7 @@ layout: default
 ---
 <div>Тут лого для блога (один тэг)</div>
 <main>
-    <div class="text-right tag-post-label">Posts with tag: <a class="label-size">{{ page.tag }}</a></div>
+    <div class="text-right tag-post-label">Posts with tag: <a class="blog-tag">{{ page.tag }}</a></div>
     {% for post in site.tags[page.tag] %}
     <section class="post-item">
         <header class="text-center">
@@ -17,7 +17,7 @@ layout: default
 
         <section>
             {% for posttag in post.tags %}
-            <a class="label-size" href="/tag/{{posttag}}/">
+            <a class="blog-tag" href="/tag/{{posttag}}/">
                 {{ posttag | replace:'-', ' ' }}
             </a>
             {% endfor %}
