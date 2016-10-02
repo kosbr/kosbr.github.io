@@ -33,7 +33,7 @@ layout: default
     <section class="text-center">
         <nav>
             <ul class="pagination">
-                <li class="page-item {% if paginator.previous_page == nil %} disabled {% endif %}">
+                <li class="{% if paginator.previous_page == nil %} disabled {% endif %}">
                     <a class="page-link"
                        href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}"
                        aria-label="Previous">
@@ -43,14 +43,14 @@ layout: default
                 </li>
 
                 {% for page in (1..paginator.total_pages) %}
-                <li class="page-item {% if page == paginator.page %} active {% endif %}">
+                <li class="{% if page == paginator.page %} active {% endif %}">
                     <a class="page-link"
                        href="{% if page == 1 %} {{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }} {% else %} {{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }} {% endif %}">{{
                         page }}</a>
                 </li>
                 {% endfor %}
 
-                <li class="page-item {% if paginator.next_page == nil %} disabled {% endif %}">
+                <li class="{% if paginator.next_page == nil %} disabled {% endif %}">
                     <a class="page-link"
                        href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}"
                        aria-label="Previous">

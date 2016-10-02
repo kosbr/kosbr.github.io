@@ -1,0 +1,24 @@
+.pagination>li>a:focus.page-link,
+.pagination>li>a:hover.page-link,
+.pagination>li>span:focus.page-link,
+.pagination>li>span:hover.page-link {
+  color: #3a3a3a;
+}
+
+.pagination>li>a.page-link,
+.pagination>li>a.page-link,
+.pagination>li>span.page-link,
+.pagination>li>span.page-link {
+  color: #3a3a3a;
+}
+
+.pagination>.active>a.page-link,
+.pagination>.active>a:focus.page-link,
+.pagination>.active>a:hover.page-link,
+.pagination>.active>span.page-link,
+.pagination>.active>span:focus.page-link,
+.pagination>.active>span:hover.page-link {
+  color: #ffffff;
+  background-color: #3a3a3a;
+  border-color: #3a3a3a;
+}
