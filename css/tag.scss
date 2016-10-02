@@ -39,6 +39,7 @@ $tag_box-shadow_hover: rgba(0, 0, 0, .1);
   box-shadow: inset 0 4px 0 $tag_box_shadow,
   0 4px 4px $tag_box-shadow;
   z-index: 999;
+  display: inline-block;
 }
 
 .blog-tag:before {
@@ -81,10 +82,6 @@ $tag_box-shadow_hover: rgba(0, 0, 0, .1);
   top: 8px;
   left: -1px;
   z-index: 9999;
-}
-
-#Label1 {
-  height: 210px;
 }
 
 .blog-tag:hover {
