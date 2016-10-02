@@ -3,9 +3,6 @@
 ---
 @charset "utf-8";
 
-/* path to glyphicons */
-$icon-font-path: "/bower_components/bootstrap-sass/assets/fonts/bootstrap/";
-
 .cool-font {
   font-family: 'PT Serif', serif;
   font-size: 20px;
@@ -37,30 +34,6 @@ a.post-title:hover {
   margin-bottom: 45px;
 }
 
-.blog-desc {
-  margin-top: 30px;
-  color: #5e5e5e;
-}
-
-.contact {
-  margin: 15px;
-  cursor: pointer;
-}
-
-.contact:hover, .contact:visited {
-  text-decoration: none;
-}
-
-@mixin media-query($device) {
-    @media screen and (max-width: $device) {
-        @content;
-    }
-}
-
-.footer {
-  margin-top: 40px;
-}
-
 .jumbotron {
   width: 450px;
 }
@@ -79,9 +52,7 @@ a.post-title:hover {
   float: right;
 }
 
-.width-80 {
-  width: 80%;
-}
+
 
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
@@ -90,5 +61,6 @@ a.post-title:hover {
         "css/menu",
         "css/tag",
         "css/logo",
-        "css/paginate"
+        "css/paginate",
+        "css/footer"
 ;
