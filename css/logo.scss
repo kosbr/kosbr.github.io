@@ -4,8 +4,6 @@
   background-position: center;
   width: 100%;
   height: 300px;
-  display: table;
-  margin: 0 auto;
   line-height: 260px;
   text-align: center;
 }
@@ -21,10 +19,60 @@
   text-transform: uppercase;
   -webkit-animation: get-small  1s 1 ease-in;
   animation: get-small  1s 1 ease-in;
-  font-size: 90px;
 }
 
-@-webkit-keyframes get-small {
-  from {font-size: 120px;}
-  to {font-size: 90px;}
+@media (max-width: 499px) {
+  .logo {
+    display: none;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 719px) {
+  .intro {
+    font-size: 20px;
+  }
+  @-webkit-keyframes get-small {
+    from {font-size: 30px;}
+    to {font-size: 20px;}
+  }
+}
+
+@media (min-width: 720px) and (max-width: 949px) {
+  .intro {
+    font-size: 30px;
+  }
+  @-webkit-keyframes get-small {
+    from {font-size: 50px;}
+    to {font-size: 30px;}
+  }
+}
+
+@media (min-width: 950px) and (max-width: 1199px) {
+  .intro {
+    font-size: 50px;
+  }
+  @-webkit-keyframes get-small {
+    from {font-size: 70px;}
+    to {font-size: 50px;}
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1549px) {
+  .intro {
+    font-size: 70px;
+  }
+  @-webkit-keyframes get-small {
+    from {font-size: 90px;}
+    to {font-size: 70px;}
+  }
+}
+
+@media (min-width: 1550px) {
+  .intro {
+    font-size: 90px;
+  }
+  @-webkit-keyframes get-small {
+    from {font-size: 120px;}
+    to {font-size: 90px;}
+  }
 }
