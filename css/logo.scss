@@ -1,11 +1,21 @@
+
 .logo {
-  background-image: url('/images/welcome.jpg');
-  background-size: 2500px 1667px;
-  background-position: center;
+
   width: 100%;
   height: 300px;
   line-height: 260px;
   text-align: center;
+}
+
+.logo-laptop {
+  background-image: url('/images/welcome.jpg');
+  background-size: 2500px 1667px;
+  background-position: center;
+}
+
+.logo-windsurf {
+  background-image: url('/images/me_windsurf.jpg');
+  background-position: bottom right;
 }
 
 .intro {
@@ -74,5 +84,31 @@
   @-webkit-keyframes get-small {
     from {font-size: 120px;}
     to {font-size: 90px;}
+  }
+}
+
+
+
+@media (min-width: 1380px) {
+  .logo-windsurf {
+    background-size: 2217px 600px;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1379px) {
+  .logo-windsurf {
+    background-size: 1770px 480px;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1099px) {
+  .logo-windsurf {
+    background-size: 1270px 344px;
+  }
+}
+
+@media (max-width: 699px)  {
+  .logo-windsurf {
+    background-size: 1107px 300px;
   }
 }

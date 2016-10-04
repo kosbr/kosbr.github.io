@@ -3,9 +3,16 @@
   {% include head.html %}
   <body class="cool-font project-content">
     {% include header.html %}
-    <div>
-        {{ content }}
+
+    {% if page.logo %}
+    <div class="logo {{page.logo}}">
+      <div class="intro">{{page.intro}}</div>
     </div>
+    {% endif %}
+
+    <main>
+        {{ content }}
+    </main>
     {% include footer.html %}
   </body>
 </html>

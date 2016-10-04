@@ -1,6 +1,8 @@
 ---
-layout: page
+layout: default
 permalink: /contact/
+logo: logo-windsurf
+intro: Kosbr
 ---
 <div class="jumbotron transparent center-block">
     <div class="container">

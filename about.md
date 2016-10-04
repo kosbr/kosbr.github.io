@@ -1,6 +1,8 @@
 ---
-layout: page
+layout: default
 permalink: /about/
+logo: logo-windsurf
+intro: Kosbr
 ---
 ![photo](/images/me.jpg){: class="center-block"}
 
