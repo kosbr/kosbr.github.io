@@ -1,0 +1,78 @@
+
+
+.skill {
+  font: 13px 'Lucida Sans', 'trebuchet MS', Arial, Helvetica;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  width: 180px;
+  position: relative;
+  margin: 5px 5px;
+  -moz-box-shadow: 0 2px 2px -1px rgba(0,0,0,.3);
+  -webkit-box-shadow: 0 2px 2px -1px rgba(0,0,0,.3);
+  box-shadow: 0 2px 2px -1px rgba(0,0,0,.3);
+  cursor: pointer;
+  -webkit-transition: background 0.5s; /* For Safari 3.1 to 6.0 */
+  transition: background 0.5s;
+  display: inline-block;
+}
+
+.skill:hover {
+  background: #e6e6f3;
+}
+
+.skill:after {
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 10px;
+  right: 4px;
+  width: 80%;
+  top: 80%;
+  -webkit-box-shadow: 0 12px 5px rgba(0, 0, 0, .3);
+  -moz-box-shadow: 0 12px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 12px 5px rgba(0, 0, 0, .3);
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+}
+
+
+.skill-header {
+  position: relative;
+  font-size: 20px;
+  font-weight: normal;
+  text-transform: uppercase;
+  width: 100%;
+  height: 78px;
+  border-bottom: 8px solid;
+  background-color: #eee;
+  background-image: -moz-linear-gradient(#fff,#eee);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
+  background-image: -webkit-linear-gradient(#fff, #eee);
+  background-image: -o-linear-gradient(#fff, #eee);
+  background-image: -ms-linear-gradient(#fff, #eee);
+  background-image: linear-gradient(#fff, #eee);
+  text-align: center;
+  line-height: 78px;
+}
+
+
+
+.skill .skill-header{
+  border-bottom-color: #B3E03F;
+}
+
+ .skills-intro {
+   line-height: 30px;
+   text-align: center;
+ }
+
+ .skill-logo {
+   height: 70px;
+   margin: 40px auto;
+   display: table;
+ }
+
