@@ -1,27 +1,26 @@
 ---
 layout: default
 ---
-<main>
-    <div class="text-right tag-post-label">Posts with tag: <a class="blog-tag">{{ page.tag }}</a></div>
-    {% for post in site.tags[page.tag] %}
-    <section class="post-item">
-        <header class="text-center">
-            <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </header>
-        <div class="post-date" text-center>{{ post.date | date: "%b %-d, %Y" }}</div>
-        <article>{{ post.excerpt }}</article>
-        <div class="text-center">
-            <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
-        </div>
 
-        <section>
-            {% for posttag in post.tags %}
-            <a class="blog-tag" href="/tag/{{posttag}}/">
-                {{ posttag | replace:'-', ' ' }}
-            </a>
-            {% endfor %}
-        </section>
+<div class="text-right tag-post-label">Posts with tag: <a class="blog-tag">{{ page.tag }}</a></div>
+{% for post in site.tags[page.tag] %}
+<section class="post-item">
+    <header class="text-center">
+        <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+    </header>
+    <div class="post-date" text-center>{{ post.date | date: "%b %-d, %Y" }}</div>
+    <article>{{ post.excerpt }}</article>
+    <div class="text-center">
+        <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
+    </div>
 
+    <section>
+        {% for posttag in post.tags %}
+        <a class="blog-tag" href="/tag/{{posttag}}/">
+            {{ posttag | replace:'-', ' ' }}
+        </a>
+        {% endfor %}
     </section>
-    {% endfor %}
-</main>
+
+</section>
+{% endfor %}

@@ -5,28 +5,28 @@ layout: default
     <div class="intro">Welcome to my blog</div>
 </div>
 
-<main>
-    <header class="text-center">
-        <h3 class="post-title text-center">{{ page.title }}</h3>
-    </header>
 
-    <div class="post-date text-center">
-        <time datetime="{{ page.date | date_to_xmlschema }}">
-            {{ page.date | date: "%b %-d, %Y" }}
-        </time>
-    </div>
+<header class="text-center">
+    <h3 class="post-title text-center">{{ page.title }}</h3>
+</header>
 
-    <article>
-        {{ content }}
-    </article>
+<div class="post-date text-center">
+    <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%b %-d, %Y" }}
+    </time>
+</div>
 
-    <section>
-        {% for posttag in page.tags %}
+<article>
+    {{ content }}
+</article>
 
-        <a class="blog-tag" href="/tag/{{posttag}}/">
-            {{ posttag | replace:'-', ' ' }}
-        </a>
+<section>
+    {% for posttag in page.tags %}
 
-        {% endfor %}
-    </section>
-</main>
+    <a class="blog-tag" href="/tag/{{posttag}}/">
+        {{ posttag | replace:'-', ' ' }}
+    </a>
+
+    {% endfor %}
+</section>
+
