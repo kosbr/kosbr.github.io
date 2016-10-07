@@ -59,6 +59,7 @@ main {
 
 
 
+
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
         "css/syntax-highlighting",
@@ -69,5 +70,6 @@ main {
         "css/paginate",
         "css/footer",
         "css/skills",
-        "css/about"
+        "css/about",
+        "css/post"
 ;
