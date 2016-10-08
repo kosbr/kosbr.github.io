@@ -20,6 +20,6 @@ markdown: kramdown
 sass:
     sass_dir: /
 
-paginate: 2
+paginate: 8
 
 gems: [jekyll-paginate]
