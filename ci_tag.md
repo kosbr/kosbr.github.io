@@ -1,7 +1,7 @@
 ---
 layout: tag
-tag: one
-permalink: /tag/one/
+tag: CI
+permalink: /tag/CI/
 logo: logo-laptop
 intro: Welcome to my blog
 ---
