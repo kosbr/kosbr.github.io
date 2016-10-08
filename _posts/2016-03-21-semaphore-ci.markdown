@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Free Cloud Continuous Integration"
-date:   2015-04-04 14:30:39 +0600
+date:   2016-03-21 14:30:39 +0600
 categories: CI
 tags: CI
 ---
