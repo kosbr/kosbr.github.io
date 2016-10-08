@@ -1,0 +1,63 @@
+---
+layout: post
+title:  "Introduction to Kotlin"
+categories: Kotlin
+tags: Kotlin
+---
+
+[Kotlin][kotlin]{:target="_blank"} is one more jvm programming language.
+JetBrains have been developing it since 2010. When I got known about it on some conference I worked with java 6.
+ The project was too big and had a lot of dependencies, so it was very hard to migrate to java 7
+ and we even didn't think about java 8.
+The main advantage of kotlin that attracted me is possibility to use additional features that can be complied to jvm 6.
+ One more feature, that kotlin and java code are compatible with each other. It allows migrating step by step, class by
+ class. For training I decided to rewrite my small project on kotlin. My feedback is below.
+
+The official web site is excellent. It has clear documentation, it gives everyone possibility to try kotlin online.
+I worked with version 0.13.1514, so it is not stable version.
+
+In short, kotlin is a modern language, fully compatible with java. It has automatic type detection, lambdas,
+internal protection from NPE and more other features to decrease lines of code. If you look at right kotlin code, you'll
+notice that only necessary information is written. No excess information. Some classes are written in a one line, instead of
+dozens lines in java.
+
+So far as both Kotlin and Idea are JetBrains's products, IDE support is quite good. The Idea even can convert java code
+to kotlin, but anyway you have to make some correction to this generated code. It is easy to write code from blank,
+ IDE helps you, I even got known some syntax rules from Idea.
+
+The main surprise I've found that all classes and methods in kotlin are final by default. In java we have 'final'
+ keyword to make it final, but in kotlin to make class or method not final (in java term) you need to use keyword 'open'.
+ I had been trying for hour to understand why my aspect didn't work until I had understood it.
+
+While I was writing this post, there wasn't official release yet. I faced with one bug:
+
+{% highlight java %}
+@Rule
+public var expectedException: ExpectedException = ExpectedException.none();
+{% endhighlight %}
+
+This code is not runnable. I've found the issue about it, soon it will be fixed. Also I've found a workaround, so
+it wasn't fatal. Of course it is too early to migrate to kotlin right now, especially in commercial project. I'd wait for
+official release and some checkstyle instruments at least.
+
+To add kotlin to a project you need only 3 short steps:
+
+* Add kotlin dependency. I used gradle, so I've added to build.gradle
+        {% highlight groovy %}
+        buildscript {
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                classpath ("org.jetbrains.kotlin:kotlin-gradle-plugin:0.13.1514")
+            }
+        }
+        apply plugin: 'kotlin'
+        dependencies {
+            compile("org.jetbrains.kotlin:kotlin-stdlib:0.13.1514")
+        }
+        {% endhighlight %}
+* Download kotlin plugin. If you use Idea do it by File->Settings->Plugins
+* Create folder src/main/kotlin for kotlin classes.
+
+[kotlin]: https://kotlinlang.org/
