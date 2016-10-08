@@ -2,8 +2,8 @@
 layout: post
 title:  "How to hire a developer for 10 days"
 date:   2015-11-10 14:30:39 +0600
-categories: HR NotTechnical
-tags: HR NotTechnical
+categories: HR Not-technical
+tags: HR Not-technical
 ---
 
 In the beginning of november I was visiting [Highload][highload]{:target="_blank"} conference. I had learned a lot of

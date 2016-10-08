@@ -23,7 +23,7 @@ layout: default
 <section>
     {% for posttag in page.tags %}
 
-    <a class="blog-tag" href="/tag/{{posttag}}/">
+    <a class="blog-tag" href="/tag/{{ posttag | slugify }}/">
         {{ posttag | replace:'-', ' ' }}
     </a>
 

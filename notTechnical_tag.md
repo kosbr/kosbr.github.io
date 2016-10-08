@@ -1,7 +1,7 @@
 ---
 layout: tag
-tag: NotTechnical
-permalink: /tag/NotTechnical/
+tag: Not-technical
+permalink: /tag/not-technical/
 logo: logo-laptop
 intro: Welcome to my blog
 ---

@@ -17,7 +17,7 @@ intro: Welcome to my blog
     <section>
         {% for posttag in post.tags %}
 
-        <a class="blog-tag" href="/tag/{{posttag}}/">
+        <a class="blog-tag" href="/tag/{{ posttag | slugify }}/">
             {{ posttag | replace:'-', ' ' }}
         </a>
 
