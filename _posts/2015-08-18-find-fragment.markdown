@@ -6,11 +6,11 @@ categories: OpenCV JavaCV Computer-vision
 tags: OpenCV JavaCV Computer-vision
 ---
 
-Month ago I faced with problem of detection some object at image. After long internet surfing about it, I've found
+Month ago I faced with problem of detection some object in an image. After long internet surfing about it, I've found
 out that the best approach to this problem is [OpenCV library][opencv]{:target="_blank"}
 
-OpenCV is a super library for working with images. It is written for all operation systems, it has rich possibilities,
-it has good documentation. I used to work with Java, so I've found java wrapper for
+OpenCV is a cool library for working with images. It is written for all operation systems, it has rich possibilities,
+it has good documentation. However, I used to work with Java, so I've found java wrapper for
 it - [JavaCV][javacv]{:target="_blank"}
 
 Unfortunately, when I was writing this article the documentation of JavaCv was not ideal. First time I even started to
@@ -24,22 +24,22 @@ To have a practise I decided to create detector of the toy.
 
 ![Plan](/images/articles/opencv/toy.jpg)
 
-This is my plan:
-1. To do a lot of photos with toy (positive selection)
+This was my plan:
+1. To do a lot of photos with the toy (positive selection)
 2. To do a lot of photos without toy (negative selection)
 3. Install openCV
 4. To train detection algorithm and get a xml file as a result
 5. Add javaCV to my application
-6. Write code to detect a toy using generated xml file
+6. Write code to detect the toy using generated xml file
 
 Before start I'd like to tell a few words about the algorithm.
 
 ### About the algorithm
 
-The algorithm [Viola–Jones][viola]{:target="_blank"} is used for detecting objects in an image. This algorithm
+The [Viola–Jones][viola]{:target="_blank"} algorithm is used for detecting objects in an image. This algorithm
  is implemented in openCV. It was created in 2001 and now
 it is hard to find a person, who has never faced with it. Striking example is simple phone or camera: it often
-detects face:
+detects faces:
 
 ![Example of using](/images/articles/opencv/phone.jpg)
 
@@ -52,31 +52,32 @@ For example, the task of the algorithm will be to detect a face. Let's try to no
 
 ![Face](/images/articles/opencv/photo.jpg)
 
-What details we can find at the image? Dark areas on the left and right sides of nose. Light area above the eyebrows,
-but it is dark below it. Jowls are bright and etc. Painters always have to find such details to make a portrait real.
+What details can we find in the image? Dark areas on the left and right sides of nose. Light area above the eyebrows,
+but it is dark below it. Jowls are bright and etc. Painters always have to find such details to make a portrait real. So we may think 
+that a portrait is a more primitive simulator of a real photo.
 
 ![Painted](/images/articles/opencv/painted.jpg)
 
-I'm sure everybody can find a face in this picture. But what if we go deeper and replace all dark areas with black color
+I'm sure everybody can find a face in this portrait. But what if we go deeper and replace all dark areas with black color
 and light areas with white color? Could you detect a face? Yes, it would be something like this, but monochrome:
 
 ![pixels](/images/articles/opencv/pixels.png)
 
 We can make the image more primitive, but saving possibility to detect face. Next step is the same replacing, but use
-bigger granule: every square a few pixels length should be replaced with one color.
+bigger granule: every square a few pixels length should be replaced with one color. You probably will find a face after such transform.
 Even if I remove all and show you picture like this, you would be able to detect face here:
 
 ![pixels](/images/articles/opencv/lines.png)
 
-However, it is excess for the algorithm, but it perfectly shows the idea. Everything can be transformed to primitive,
+However, the last step is excess for the algorithm, but it perfectly shows the idea. Everything can be transformed to primitive,
 that can be easily parsed. Viola–Jones algorithm uses following primitives, that are called Haar-like features:
 
-![Haar-like features](/images/articles/opencv/haar.png)
+![Haar-like features](/images/articles/opencv/haar.jpg)
 
 The training process is an investigating mapping between Haar-like features and object we want to detect.
 The detection process is iterating throw different areas in searching of matching Haar-like features.
 
-The best advantage of this algorithm is high speed, that it is possible to detect online from video. However, the
+The best advantage of this algorithm is high speed, that it is possible to detect online in a video. However, the
 training process may take a lot of time (days). One more important disadvantage is bad detection if the object is
 rotated.
 
@@ -91,7 +92,7 @@ respect the rule, that selection must be close to real.
 
 I did it on windows machine, the installation is very simple and contains three steps:
 
-1. Download self-extracting archive [OpenCV library][here]{:target="_blank"}
+1. Download self-extracting archive [here][opencv]{:target="_blank"}
 2. Run it.
 3. Set environment variables:
 
@@ -125,8 +126,8 @@ Let's go throw all parameters of this command.
  before training I cropped all my pictures, so my rectangle contains whole photo area.
 
 
- * samples.vec — The output file. We will use it for training.
- * w and h - width and height of a sample respectively. The size should be about proportional to the real object size.
+ * samples.vec — The output file. It will be used for training.
+ * w and h - width and height respectively of a sample. The size should be about proportional to the real object size.
   Please, use as minimal values as possible, but the object must be detectable in an image with such size. My advice
   is to use additional options -num 5 -show to see result and correct params if it is needed.
 
@@ -141,28 +142,27 @@ Let's go throw all parameters of this command.
  I use here following params:
 
 * haar — The folder with result
-* samples.vec — File with positive selection we've prepared at previous step
-* bad.txt — File with negative selection. The structure of file is similar to good.txt, but there is only one
- parameter per line - filename of image from negative selection.
-* numStages=16 — Number of cascade levels. More levels - more accuracy, longer training. Please, use something
+* samples.vec — The file with positive selection, it has been prepared at previous step
+* bad.txt — The file with negative selection. The structure of file is similar to good.txt, but there is only one
+ parameter per line - filename of an image from negative selection.
+* numStages=16 — The number of cascade levels. More levels - more accuracy, longer training. Please, use something
 between 16 and 25.
 * minHitRate=0.999 — quality of training coefficient. The part of possible errors with positive selection.
 Too big values lead to high level of false alarm.
-* maxFalseAlarmRate =0.4 — Level of false alarm.
-* numPos=140 — Number of positive examples. It is recommended to set it 80% of real value.
-* numNeg=150 — Number of negative examples.
-* w=20 h=20 — The sample size. The same was used at first step.
+* maxFalseAlarmRate =0.4 — Max level of false alarm.
+* numPos=140 — The number of positive examples. It is recommended to set it 80% of real value.
+* numNeg=150 — The number of negative examples.
+* w=20 h=20 — The sample size. The same was used at the first step.
 
-Training may take a lot of time. I had about 150 positive and negative examples, training had been finished since
+Training may take a lot of time. I had about 150 positive and negative examples, my training had been finished since
 several hours at 12th stage because of achieving max false alarm level. While I'm writing this post, another training
-process have been working for 3 days. After it finishes, result can be found in haar folder. It is xml file named
-cascade.xml.
+process have been working for 3 days. After it finishes, result can be found in result folder. It is a xml file cascade.xml.
 
 ### Java program for detection
 
-As I mentioned in the beginning, I used [JavaCV][javacv]{:target="_blank"} as opencv wrapper. I need to download
-jar from their site and add to my project. After I've done it, it is possible to write such method, that aceppts
-two strings: filename of image for detection and filename of image for saving result.
+As I mentioned at the beginning, I used [JavaCV][javacv]{:target="_blank"} as opencv java wrapper. To use it I need to download
+jar from their site and add to my project. After I've done it, it is possible to write such class with method, that accepts
+two strings: filename of input image and filename of image for saving result.
 
  {% highlight java %}
  import org.bytedeco.javacpp.opencv_core;
@@ -205,12 +205,12 @@ two strings: filename of image for detection and filename of image for saving re
  {% endhighlight %}
 
 Please, be careful, openCV has different API depends of version. JavaCV is compatible with all of them, but
-you can face with old examples that may mislead you.
+you can face with old examples and docs that may mislead you.
 
 ### How does it work?
 
 After I've finished, I made a test for my program. I used a few dozens images of toy for test, in 17% cases it didn't
- find the toy, but it was there. All error photos has common feature: close-up picture of a the toy. Anyway, I'm really
+ find the toy, but it was there. All error photos has common feature: close-up picture of  the toy. Anyway, I'm really
  impressed of the possibilities of the algorithm.
 
 [opencv]: http://opencv.org/

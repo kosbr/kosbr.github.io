@@ -6,9 +6,9 @@ categories: HR Not-technical
 tags: HR Not-technical
 ---
 
-In the beginning of november I was visiting [Highload][highload]{:target="_blank"} conference. I had learned a lot of
+At the beginning of november I was visiting [Highload][highload]{:target="_blank"} conference. I had learned a lot of
 technical trends, best practises by listening to the experienced speakers. However I was attracted to the lecture of
-Alexandr Ziza with loud title - "How to hire a developer for 10 days". It covered the issue of developer's growth and
+Alexandr Ziza with loud title - "How to hire a developer for 10 days". It covers the issue of developer's growth and
 opens some not standard instruments for attracting developers to a company. Does you company use it?
 
 ### Growth graph
@@ -32,11 +32,11 @@ The most attractive specialists for companies are people, who are finishing next
   Alexandr told that without any HR policy about 80% income CV are from not appropriate people. A few advice from Alexandr
   to get good specialists (only the most interesting and not obvious):
 
-  * Organize some *paid* training. Not free - is very important. Specialists, who pay money for education are those active
+  * Organize some *paid* training. Not free - is very important. Specialists, who pay money for education are active
   people who always growing.
   * Organize a lot of events in your office. It also attracts people to your company.
   * New people make a reputation of your company. They should be placed in the best areas of your office. These people
-  will be asked questions like "Are you satisfied with you company?". Likely they will share in the Instagram photos of
+  will be asked questions like "Are you satisfied with your new company?". Likely they will share in the Instagram photos of
    your office and their workplaces.
 
   And the last interesting idea Alexandr noticed: In common it is not bad if your company often changes developers, but
