@@ -2,7 +2,7 @@
 layout: post
 title:  "How to hire a developer for 10 days"
 date:   2015-11-10 14:30:39 +0600
-categories: HR Not-technical
+categories:
 tags: HR Not-technical
 ---
 

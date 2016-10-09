@@ -2,7 +2,7 @@
 layout: post
 title:  "Searching a fragment with OpenCV (JavaCV)"
 date:   2015-08-18 14:30:39 +0600
-categories: OpenCV JavaCV Computer-vision
+categories:
 tags: OpenCV JavaCV Computer-vision
 ---
 
