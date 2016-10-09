@@ -7,23 +7,23 @@ tags: OpenCV JavaCV Computer-vision
 ---
 
 There is a business process which includes printing some document and signing it by a client. However, clients often
- forget to sign and cause a lot problems and excess actions. Is is needed to reduce number of unsigned documents, but
+ forget to sign and cause a lot of problems and excess actions. It is needed to reduce number of unsigned documents, but
  don't use additional alerts and messages to be more user-friendly. I was asked to solve this problem and I've done it.
  In this post I'm going to describe solution, which uses opecv+javacv. I told about this libraries in
  [previous post][previousPost].
 
 ### The problem formulation
 
-A document is given, a client must fill some fields there, like name, address and etc. The sign place is situated
+A document is given, a client must fill some fields there like name, address and etc. The sign place is situated
 at the bottom of a document:
 
 ![Area for sign](/images/articles/opencv/signplace.png)
 
-The program must detect if the sign exist or not in a scan of this document. It is possible to make not
+The program must detect if the sign exists or not in a scan of this document. It is possible to make not
  significant changes to document's structure. Obviously, the problem may be divided in two problems:
  
  * Finding sign area
- * Analysis of this area and sign existing detection
+ * Analysis of this area and return if sign exists
  
 ### Finding sign area
  
@@ -31,10 +31,10 @@ The program must detect if the sign exist or not in a scan of this document. It 
  
  ![Frame attempts](/images/articles/opencv/try.png)
  
- The first idea was surround this area by 4 crosses. I planned to find 4 crosses and investigate area between them. I 
-  tried to avoid directly detecting area with sign, because the sign may be different. 
- However, crosses are bad idea because cross is frequent figure, level of false detection will be very high. Then I 
- tried to detect all rectangle with sign and it was rather better approach. The was two secrets of a success:
+ The first idea was surrounding this area by 4 crosses. I planned to find 4 crosses and investigate area between them. I 
+  tried to avoid directly detecting area with sign, because a sign may be different. 
+ However, crosses are bad idea because cross is a frequent figure, level of false detection will be very high. Then I 
+ tried to detect all rectangle with sign and it was rather better approach. There were two secrets of a success:
  
  * Having a big positive selection with different types of sign
  * Modification of a rectangle to avoid false detections. Simple rectangle is also a frequent figure.
@@ -49,12 +49,13 @@ The program must detect if the sign exist or not in a scan of this document. It 
  
   ![Positive selection](/images/articles/opencv/many_signs.jpg)
   
- I had to repeat it for several times, so I had written a util program to automate the process of creating positive
+ I had to repeat it for several times, so I had written the util program to automate the process of creating positive
  selection. It accepts a scan with a lot of signs, divides it into small images (one per sign) and creates a file with
- positive selection for openCV training. Negative selection was made of some books about Assembler. So the negative selection is just a lot of scans of books.
+ positive selection for openCV training. Negative selection was made of some books about Assembler. So the negative 
+ selection is just a lot of scans of books.
  As a result I had 594 positive samples and 1594 negative images. 
  
- To train the algorithm I used folowing parameters:
+ To train the algorithm I used following parameters:
 
   {% highlight bash %}
   opencv_traincascade.exe -data haar -vec samples.vec
@@ -62,13 +63,13 @@ The program must detect if the sign exist or not in a scan of this document. It 
   -maxFalseAlarmRate 0.4 -numPos 550 -numNeg 1594 -w 43 -h 30
   {% endhighlight %}
   
-  The selection was quite good, the training took about 3 days and was finished on 9th stage (staring from 0). 
-  The stop reason was achieving max false alarm level.  Strictly speaking, the 10th stage was interrupted, but it when
-  it was interrupted, it had been working already for 20 hours. So if I had used numStages = 9, the result 
+  The selection was quite good, the training had taken about 3 days and was finished on 9th stage (staring from 0). 
+  The stop reason was achieving max false alarm level.  Strictly speaking, the 10th stage was interrupted, but 
+  when it was interrupted, it had been working already for 20 hours. So if I had used numStages = 9, the result 
   would have been the same and taken about 2 days.
   
-  Is it advised in the documentation to use equalizeHist transformation before detection. It makes brightness and contrast
-  better for searching and an image after this looks like below:
+  It is advised in the documentation to use equalizeHist transformation before detection. 
+  It makes brightness and contrast better for searching. An image after this transformation looks like this:
    
   ![Equalized image](/images/articles/opencv/equalized.png)
   
@@ -80,6 +81,7 @@ The program must detect if the sign exist or not in a scan of this document. It 
   when the largest area is not appropriate sign area. 
   
   ### If a sign exist
+  It is the second part of the algorithm. It starts only if the first part has found a sign area.
   
   The first action I decided to do is to reduce area 4 times. It allows me ignore a frame and lead the problem to 
   finding something in white rectangle. The picture below shows that this approach is valid.
@@ -92,7 +94,7 @@ color can be represent with one integer between 0 and 255. 255 - is white, 0 - i
 deviation of this value inside the frame. If a sign exists, the standard deviation will be high, it means there are a lot
 of pixels with different from background color. My experiments showed, that optimal limit of standard deviation is 41. 
 If it is more, it means a sign exists. The parameter is very sensitive, it even allows to filter fake signs like simple 
-crosses. 
+cross. 
 
 ### Code
 
