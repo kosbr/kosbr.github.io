@@ -44,8 +44,8 @@ $tag_box-shadow_hover: rgba(0, 0, 0, .1);
 
 .blog-tag:before {
   content: '';
-  width: 21px;
-  height: 21px;
+  width: 24px;
+  height: 24px;
   background-image: -webkit-linear-gradient(left top, $tag_light_bg, $tag_dark_bg);
   background-image: -moz-linear-gradient(left top, $tag_light_bg, $tag_dark_bg);
   background-image: -o-linear-gradient(left top, $tag_light_bg, $tag_dark_bg);
@@ -53,7 +53,7 @@ $tag_box-shadow_hover: rgba(0, 0, 0, .1);
   background-image: linear-gradient(left top, $tag_light_bg, $tag_dark_bg);
   position: absolute;
   left: -11px;
-  top: 3px;
+  top: 4px;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
