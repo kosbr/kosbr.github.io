@@ -7,9 +7,8 @@ tags: OpenCV JavaCV Computer-vision
 ---
 
 Month ago I faced with problem of detection some object in an image. After long internet surfing about it, I've found
-out that the best approach to this problem is [OpenCV library][opencv]{:target="_blank"}
-
-OpenCV is a cool library for working with images. It is written for all operation systems, it has rich possibilities,
+out that the best approach to this problem is [OpenCV library][opencv]{:target="_blank"}.
+It is a cool library for working with images. It is written for all operation systems, it has rich possibilities,
 it has good documentation. However, I used to work with Java, so I've found java wrapper for
 it - [JavaCV][javacv]{:target="_blank"}
 
