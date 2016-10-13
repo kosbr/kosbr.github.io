@@ -1,0 +1,70 @@
+---
+layout: post
+title:  "Why do I use jekyll for blogging"
+date:   2016-10-13 14:30:39 +0600
+categories:
+tags: Jekyll Blog
+---
+
+I have had blog already for 1.5 years by the october 2016. My first blog was created with 
+[https://www.blogger.com][blogger]{:target="_blank"} service which is provided by Google.  This service is rather
+good for classical bloggers, but not for developers. A developer wants own blog to be modern, maybe unique and have a 
+lot of inserted formatted colored code. So, I decided to close my old blog and create a new one with
+ [Jekyll][jekyll]{:target="_blank"} Some advantages of jekyll are described here, I'm sure it will attract you.
+
+
+### Design templates
+
+Almost every blog system has own design templates. Some of them could be downloaded from the internet and the best 
+ones can be bought in different stores. Jekyll doesn't have any templates. We are developers, we can do it ourselves!
+Somebody may consider it as disadvantage, but I think it is the absence of limits.
+
+### Simple dynamics part
+
+As far as a blogger have to have own template, it must contain a little dynamic part, that is responsible for posts
+viewing, paging, tags and etc. Jekyll provides such functionality in a couple of code lines. 
+ 
+Although the jekyll code appearance can be minimal, the possibilities are rather rich. Anyway it is almost programming
+language. I don't recommend do it, but it is possible to do more complicated things with it. Jekyll has a lot of 
+ plugins to extend base functionality. 
+
+### Perfect code formatting
+
+I always had problems with code highlighting in different services. Even in stackoverflow it is ugly. Jekyll has
+built-in plugin that highlights almost every programming language. The small example of java code is below.
+
+{% highlight java %}
+    @ApiOperation(value = "authenticate")
+    @POST
+    public UserWrapperDto authenticate(@NotNull @Valid final Credentials credentials) {
+        final UserTokenContainer userTokenContainer = userService.authenticate(credentials.getLogin(),
+                credentials.getPassword());
+        return userMapper.mapToDto(userTokenContainer);
+    }
+{% endhighlight %}
+
+Of course, it is not so good, like in the Intellij Idea, but quite good for blog.
+
+### Work with blog like with code
+
+Jekyll blog is a common project, that can be under the version control system. I use git, often I have a few branches
+with different unfinished articles. So merge to master means publishing. Also it is comfortable to write in favourite
+IDE, it is rather better than some notepad-like editors. A post can be written in html or markdown. I use markdown.
+
+### Static html & Github hosting
+
+Although a jekyll project has a few dynamics, it can be compiled to static html. So you can choose any hosting you want -
+just upload _site folder to a server. Even github can host jekyll blog. Just create a repository with special name and
+push a jekyll project there. It will be build and served automatically. 
+
+### Limits (disadvantages)
+
+Anyway jekyll has obvious constraints due the fact it is static. It is impossible to add comments, likes or statistics
+without third-party services. Also almost all custom logic is unavailable.
+Before choosing jekyll you must to find out what limits is appropriate for you.
+
+You may visit my [blog repository][myblog]{:target="_blank"} and look sources. 
+
+[myblog]: https://github.com/kosbr/kosbr.github.io
+[blogger]: https://www.blogger.com/
+[jekyll]: https://jekyllrb.com/
