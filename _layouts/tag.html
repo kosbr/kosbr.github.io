@@ -11,7 +11,7 @@ layout: default
     <div class="post-date" text-center>{{ post.date | date: "%b %-d, %Y" }}</div>
     <article>{{ post.excerpt }}</article>
     <div class="text-center">
-        <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
+        <a class="btn btn-default read-more" href="{{ post.url | prepend: site.baseurl }}">Read more</a>
     </div>
 
     <section>
