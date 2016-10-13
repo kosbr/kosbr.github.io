@@ -1,4 +1,14 @@
-.me-image {
-  position: absolute;
-  right: 25px;
+@media (max-width: 767px) {
+  .me-image {
+    display: table;
+    margin: auto;
+  }
 }
+
+@media (min-width: 768px) {
+  .me-image {
+    position: absolute;
+    right: 25px;
+  }
+}
+
