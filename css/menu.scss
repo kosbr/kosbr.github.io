@@ -17,8 +17,10 @@
   margin-left: 20px;
 }
 
-.menu-items {
-  padding-left: 200px;
+@media (min-width: 767px) {
+  .menu-items {
+    padding-left: 200px;
+  }
 }
 
 .menu-container {
