@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Why do I use jekyll for blogging"
-date:   2016-10-13 14:30:39 +0600
+date:   2016-10-18 14:30:39 +0600
 categories:
 tags: Jekyll Blog
 ---
@@ -61,7 +61,7 @@ push a jekyll project there. It will be build and served automatically.
 
 Anyway jekyll has obvious constraints due the fact it is static. It is impossible to add comments, likes or statistics
 without third-party services. Also almost all custom logic is unavailable.
-Before choosing jekyll you must to find out what limits is appropriate for you.
+Before choosing jekyll you must find out what limits is appropriate for you.
 
 You may visit my [blog repository][myblog]{:target="_blank"} and look sources. 
 
