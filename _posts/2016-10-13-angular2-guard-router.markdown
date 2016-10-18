@@ -1,19 +1,19 @@
 ---
 layout: post
 title:  "Angular 2 guard router directive"
-date:   2016-10-16 14:30:39 +0600
+date:   2016-10-18 14:30:39 +0600
 categories:
 tags: Angular2 
 ---
 
 A few weeks ago while I was developing my Angular 2 application I faced with problem: How to hide routerLinks if the 
-transition is not allowed? I could'nt find any simple solution so I had to create my own one. Also I've found the similar
+transition is not allowed? I couldn't find any simple solution so I had to create my own one. Also I've found the similar
 question in [stackOverFlow][stackOverFlow]{:target="_blank"} and shared my idea. This post describes this problem and 
-the solution in details. However, I don't like this solution and waiting for better one, I'll explain it at the end.
+the solution in details. 
 
 ### Problem description
 
-We configure routes in Angular2 by creating array of Route objects. 
+We configure routes in Angular2 by creating array of Route objects. The example is below.
 
 {% highlight typescript %}
 export const itemRoutes: Routes = [
@@ -42,7 +42,10 @@ export const itemRoutes: Routes = [
 ]
 {% endhighlight %}
 
-And then it is possible to use such routerLinks to change state:
+CanActivate property contains an array of objects, which implement CanActivate interface. They are responsible
+for availability of the state. Data property contains an additional information about the route. It can be extracted
+in CanActivate method. I use it for keeping the list of allowed roles.
+After the configuration is done it is possible to use such routerLinks to change state:
 
 {% highlight html %}
 <li>
@@ -148,18 +151,22 @@ export class RoleGuardService implements CanActivate, Guard {
 }
 {% endhighlight %}
 
-By this step I've done nothing except extracting some logic of standard canActivate method to another method. Next task is creating a directive.
+By this step I've done nothing except extracting some logic of standard canActivate method to another method. 
+Next task is creating a directive. The directive will allow us to call allowTransition directly, not throw 
+canActivate method.
 
 #### Creating a directive
 
 The idea of directive is following:
 
-1) import all necessary routes configuration
-2) Parse all CanActivates from configuration and find appropriate one (which path matches with parameter)
-3) Get the instances of all necessary CanActivates(which are Guards) and call allowTransition method.
-4) Handle returned value.
+1. import all necessary routes configuration
+2.  Parse all Routes from configuration and find appropriate one (which path matches with parameter)
+3.  Get the instances of all necessary CanActivates(which are Guards) and call allowTransition method.
+3.  Handle returned value.
 
-The most difficult part is step 2 and 3. This is the piece of code which is processing it:
+
+The first step is very easy. You can use simple import for example.
+The most difficult part is step 2 and 3. This is the piece of code which processes it:
 
 {% highlight typescript %}
 let allow = true;
@@ -198,7 +205,8 @@ let allow = true;
     }
 {% endhighlight %}
 
-I hope my comments will make the code clear for you. I used pathMatch method for check path matching. This methods contains a couple
+I hope my comments will make the code clear for you. The internal angular2 injector is used for getting necessary instances.
+ I also used pathMatch method for check path matching. This methods contains a couple
 of lines due to the [Route Matcher][routerMatcher]{:target="_blank"} library.
 
 {% highlight typescript %}
@@ -292,7 +300,14 @@ export class AllowTransitionDirective implements OnDestroy, LoginListener, OnIni
 
 {% endhighlight %}
 
-You can found one more addition -  LoginListener interface and
+If the allowTransition method returns false, it hides the element. I use css display property for it. Obviously, I need
+to remember the initial property value for getting back.
+ 
+Of course, I had to create some mechanism for updating. If user logs in, this event possible will change current roles and the allowTrainsition method must be called one more time.
+That's why I've created an interface LoginListener with one method onLogin. After every login event the onLogin method
+is called and my element visibility is always actual. 
+
+
 
 [stackOverFlow]: http://stackoverflow.com/questions/38976109/hide-a-routerlink-if-its-associated-route-cannot-be-activated/39056222#39056222
 [routerMatcher]: https://github.com/cowboy/javascript-route-matcher
