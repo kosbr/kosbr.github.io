@@ -80,7 +80,7 @@ The program must detect if the sign exists or not in a scan of this document. It
   that sign area. I can filter all of them by choosing the largest area. Fortunately, I've never faced with situation 
   when the largest area is not appropriate sign area. 
   
-  ### If a sign exist
+### If a sign exist
   It is the second part of the algorithm. It starts only if the first part has found a sign area.
   
   The first action I decided to do is to reduce area 4 times. It allows me ignore a frame and lead the problem to 
