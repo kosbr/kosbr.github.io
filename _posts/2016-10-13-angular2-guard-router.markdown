@@ -302,10 +302,20 @@ export class AllowTransitionDirective implements OnDestroy, LoginListener, OnIni
 
 If the allowTransition method returns false, it hides the element. I use css display property for it. Obviously, I need
 to remember the initial property value for getting back.
- 
+
 Of course, I had to create some mechanism for updating. If user logs in, this event possible will change current roles and the allowTrainsition method must be called one more time.
 That's why I've created an interface LoginListener with one method onLogin. After every login event the onLogin method
 is called and my element visibility is always actual. 
+
+### Disadvantages
+
+This solution has two points to improve:
+
+1. CanActivate method can return a promise of boolean. However in the previous description I considered it returns only
+ boolean. It's a good idea to allow allowTransition method return promise too.
+2. A lazy loaded module has own independent routes. It means all paths are written regarding module's root, not 
+application's root like we do with usual module. This fact breaks down logic with iterating over routes. Something more 
+complex should be used in such case. 
 
 
 
