@@ -87,7 +87,7 @@ I've taken about 150 photos. Then I've taken the same number of photos without t
 my apartment in different places with different lighting, in the same conditions I'm going to test it. This way I
 respect the rule, that selection must be close to real.
 
-### OpenCV install
+### OpenCV installing
 
 I did it on windows machine, the installation is very simple and contains three steps:
 
