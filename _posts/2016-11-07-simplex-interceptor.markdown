@@ -7,9 +7,9 @@ tags: Algorithms Forks
 ---
 
 There are not so many java implementations of [simplex method][simplex]{:target="_blank"} in the internet. In my 
-opinion the best one is [Apache Commons-math][commons-math]{:target="_blank"}. The library is huge and has a lof of 
+opinion the best one is [Apache Commons-math][commons-math]{:target="_blank"}. This library is huge and has a lof of 
 other implemented math algorithms including simplex method. However, I haven't found any library for getting intermediate
-solutions in simplex method, so I had to fork Apache commons-math.
+solutions in simplex method, so I had to fork Apache commons-math and do it myself.
 
 ### The problem
 
@@ -69,20 +69,16 @@ That's why I've published it in jcenter repository. To download it add following
 
 {% highlight xml %}
     <repositories>
- 		<repository>
- 			<snapshots>
- 				<enabled>false</enabled>
- 			</snapshots>
- 			<id>bintray-dev-kosbr-maven</id>
- 			<name>bintray</name>
- 			<url>https://dl.bintray.com/dev-kosbr/maven</url>
- 		</repository>
- 	</repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com </url>
+        </repository>
+    </repositories>
     <dependencies>
-     <dependency>
+        <dependency>
             <groupId>com.github.kosbr</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1.2</version>
+             <artifactId>commons-math3</artifactId>
+             <version>3.6.1.3</version>
         </dependency>
     </dependencies>
 {% endhighlight %}
@@ -90,4 +86,3 @@ That's why I've published it in jcenter repository. To download it add following
 [simplex]: https://en.wikipedia.org/wiki/Simplex_algorithm
 [commons-math]: https://github.com/apache/commons-math
 [commons-math-my]: https://github.com/kosbr/commons-math
-[jekyll]: https://jekyllrb.com/
