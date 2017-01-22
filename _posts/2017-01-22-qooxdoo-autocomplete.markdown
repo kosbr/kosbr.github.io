@@ -83,7 +83,6 @@ By this moment I have been developing and fixing bugs of the [qooxdoo][qooxdoo]{
                      if (this.__preSelectedItem) {
                          var list = this.getChildControl("list");
                          list.setSelection([this.__preSelectedItem]);
-                         //this.setValue(this.__preSelectedItem.getLabel());
                      }
                      this.close();
                      return;
