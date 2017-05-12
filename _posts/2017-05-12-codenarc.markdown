@@ -1,29 +1,29 @@
 ---
 layout: post
-title:  "Check code style in big grails project"
-date:   2017-05-13 14:30:39 +0600
+title:  "Code style check in a big grails project"
+date:   2017-05-12 14:30:39 +0600
 categories:
-tags: Codenarc Grails Groovy
+tags: Codestyle Grails Groovy
 ---
 
-It is very hard problem to begin respecting code style on a big old project, especially if there are a lot of
-developers and the initial quality is not so good. However, I believe that even in this case it is needed to pay
+It is always very hard problem to begin respecting code style on a big old project, especially if there are a lot of
+developers and the initial code quality is not so good. However, I believe that even in this case it is needed to pay
 attention on code quality to improve
 at least some parts of project. The main idea, all developers should start writing good code despite
-next class still contains horror code. In this post I'd like to tell about the system that helps improving style
- in a huge ugly project and share some points about codenarc and its grails plugin.
+the rest classes still contain horrible code. In this post I'd like to tell about the system that helps improving style
+ in a huge project and share some points about codenarc and its grails plugin.
 
 I decided to use [Codenarc grails plugin][plugin]{:target="_blank"} for checking style. Actually I hadn't any
-choice for grails project. It generates pretty html report with sorted violations. When I launched it on the
- project it returns me thousands of errors. It is useful information when you want to get know some statistics
- about whole project, but if is absolutely uncomfortable for a single developer, who wants just to check if his
- or hew own code is valid. Of course, it is possible to find own class using browser search in html report,
-  but it is very uncomfortable. Unfortunately, sometimes commits are rather big.
+choice for grails project. It generates pretty html report with sorted style violations. When I launched it on the
+ project it returned me thousands of errors. It is useful information when you want to get know some statistics
+ about whole project, but it is absolutely uncomfortable for a single developer, who wants just to check if his
+ or hew own code is valid. Of course, it is possible to find edited classes using browser search in html report,
+  but it is very uncomfortable - unfortunately, sometimes commits are rather big.
 
 To solve this problem I took [command line codenarc][cl]{:target="_blank"} version.
  It does the same what grails plugin does, but using command line. The idea is to get a list of modified files
   by git and check them with codenarc and, as a result, generate a simple small report only for files that were
-   modified by developer. It is expected, that reading this report developer will fix some errors, that can be
+   modified by developer. It is expected, that reading this report developer will fix some errors, which can be
    fixed without any additional risk.
 
 ### How to use codenarc commandline
@@ -31,7 +31,7 @@ To solve this problem I took [command line codenarc][cl]{:target="_blank"} versi
 There is only one small page in official site that describes using command line app. Actually, it is rather more
     complicated. My codenarc.xml configuration is following:
 
-```
+{% highlight xml %}
 <ruleset xmlns="http://codenarc.org/ruleset/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://codenarc.org/ruleset/1.0 http://codenarc.org/ruleset-schema.xsd"
          xsi:noNamespaceSchemaLocation="http://codenarc.org/ruleset-schema.xsd">
@@ -76,9 +76,9 @@ There is only one small page in official site that describes using command line 
         <exclude name="FactoryMethodName"/>
     </ruleset-ref>
 </ruleset>
-```
+{% endhighlight %}
 
-It is important to publish it, because different rules demands different dependencies and you are responsible
+It is important to publish it, because different rules demand different dependencies and you are responsible
 for providing it. It is said on project's site, that following resources must be included in classpath
 
 1. The Groovy jar
@@ -88,15 +88,16 @@ for providing it. It is said on project's site, that following resources must be
 
 Actually, you may be asked to add more resources, otherwise ClassNotFoundException will be thrown. I've added
  additionally GMetrics-0.3.jar and ...one more groovy:) It seems, that different rules uses different groovy versions.
- When I changed version to 1.*, I got one ClassNotFoundException error, else other class was not found with version 2.*.
+ When I changed version to 1, I got one ClassNotFoundException error, else other class was not found with groovy
+ version 2.
  Fortunately, adding two groovy jars solved the problem, however it is very risky action, I'm lucky
  that it is working without any problems. (Of course this approach is applicable in limited set of situations,
- actually we don't risk if something goes wrong with codestyle checking. I still finding better solution
+ actually we don't risk if something goes wrong with codestyle checking. I'm still finding better solution
  when I have free time)
 
 After downloading necessary dependencies, this script will be able to generate a report:
 
-```
+{% highlight bash %}
 GROOVY1_JAR="lib/groovy-all-1.7.10.jar"
 GROOVY2_JAR="lib/groovy-all-2.1.0.jar"
 CODENARC_JAR="lib/CodeNarc-0.27.0.jar"
@@ -107,13 +108,13 @@ CONFIG_DIR="project/config/codenarc"
 
 java -classpath $GROOVY2_JAR:$CODENARC_JAR:$LOG4J_JAR:$CONFIG_DIR:$GMETRICS_JAR:$GROOVY1_JAR org.codenarc.CodeNarc -basedir=$BASEDIR -rulesetfiles="codenarc.xml"
 
-```
+{% endhighlight %}
 
 ### Git integration
 
-This script collects all files in a string and then checks them using "includes" option of command line application
+This script below collects all files in a string and then checks them using "includes" option of command line application
 
-```
+{% highlight bash %}
 cd project
 output=$(git ls-files -m | grep .groovy)
 PATHS=""
@@ -134,8 +135,9 @@ CONFIG_DIR="project/config/codenarc"
 
 java -classpath $GROOVY2_JAR:$CODENARC_JAR:$LOG4J_JAR:$CONFIG_DIR:$GMETRICS_JAR:$GROOVY1_JAR org.codenarc.CodeNarc -basedir=$BASEDIR -includes=$PATHS -rulesetfiles="codenarc.xml"
 
-```
-It is assumed following file structure:
+{% endhighlight %}
+
+It is assumed following file structure (project is the root dir of grails project):
 
 ```
 check.sh
