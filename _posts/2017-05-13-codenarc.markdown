@@ -1,0 +1,156 @@
+---
+layout: post
+title:  "Check code style in big grails project"
+date:   2017-05-13 14:30:39 +0600
+categories:
+tags: Codenarc Grails Groovy
+---
+
+It is very hard problem to begin respecting code style on a big old project, especially if there are a lot of
+developers and the initial quality is not so good. However, I believe that even in this case it is needed to pay
+attention on code quality to improve
+at least some parts of project. The main idea, all developers should start writing good code despite
+next class still contains horror code. In this post I'd like to tell about the system that helps improving style
+ in a huge ugly project and share some points about codenarc and its grails plugin.
+
+I decided to use [Codenarc grails plugin][plugin]{:target="_blank"} for checking style. Actually I hadn't any
+choice for grails project. It generates pretty html report with sorted violations. When I launched it on the
+ project it returns me thousands of errors. It is useful information when you want to get know some statistics
+ about whole project, but if is absolutely uncomfortable for a single developer, who wants just to check if his
+ or hew own code is valid. Of course, it is possible to find own class using browser search in html report,
+  but it is very uncomfortable. Unfortunately, sometimes commits are rather big.
+
+To solve this problem I took [command line codenarc][cl]{:target="_blank"} version.
+ It does the same what grails plugin does, but using command line. The idea is to get a list of modified files
+  by git and check them with codenarc and, as a result, generate a simple small report only for files that were
+   modified by developer. It is expected, that reading this report developer will fix some errors, that can be
+   fixed without any additional risk.
+
+### How to use codenarc commandline
+
+There is only one small page in official site that describes using command line app. Actually, it is rather more
+    complicated. My codenarc.xml configuration is following:
+
+```
+<ruleset xmlns="http://codenarc.org/ruleset/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://codenarc.org/ruleset/1.0 http://codenarc.org/ruleset-schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://codenarc.org/ruleset-schema.xsd">
+    <ruleset-ref path='rulesets/basic.xml'>
+
+    </ruleset-ref>
+    <ruleset-ref path='rulesets/braces.xml'/>
+    <ruleset-ref path='rulesets/grails.xml'>
+        <rule-config name="GrailsStatelessService">
+            <property name="ignoreFieldNames" value="grailsApplication, mailService"/>
+        </rule-config>
+    </ruleset-ref>
+    <ruleset-ref path='rulesets/logging.xml'/>
+    <ruleset-ref path='rulesets/size.xml'/>
+    <ruleset-ref path='rulesets/unnecessary.xml'>
+        <exclude name="UnnecessaryGetter"/>
+    </ruleset-ref>
+    <ruleset-ref path='rulesets/unused.xml'/>
+
+    <ruleset-ref path='rulesets/formatting.xml'>
+        <exclude name="SpaceAroundMapEntryColon"/>
+        <exclude name="ClassJavadoc"/>
+    </ruleset-ref>
+    <ruleset-ref path='rulesets/imports.xml'>
+        <exclude name="MisorderedStaticImports"/>
+        <exclude name="NoWildcardImports"/>
+    </ruleset-ref>
+    <ruleset-ref path='rulesets/naming.xml'>
+        <rule-config name='ClassName'>
+            <property name='regex' value='^[A-Z][\$a-zA-Z0-9]*$'/>
+        </rule-config>
+        <rule-config name='FieldName'>
+            <property name='finalRegex' value='^[a-z][a-zA-Z0-9]*$'/>
+            <property name='staticFinalRegex' value='^logger$|^[A-Z][A-Z_0-9]*$|^serialVersionUID$'/>
+        </rule-config>
+        <rule-config name='MethodName'>
+            <property name='regex' value='^[a-z][\$_a-zA-Z0-9]*$|^.*\s.*$'/>
+        </rule-config>
+        <rule-config name='VariableName'>
+            <property name='finalRegex' value='^[a-z][a-zA-Z0-9]*$'/>
+        </rule-config>
+        <exclude name="FactoryMethodName"/>
+    </ruleset-ref>
+</ruleset>
+```
+
+It is important to publish it, because different rules demands different dependencies and you are responsible
+for providing it. It is said on project's site, that following resources must be included in classpath
+
+1. The Groovy jar
+2. The CodeNarc jar
+3. The Log4J jar
+4. The directories containing (or relative to) CodeNarc config files such as "codenarc.properties" or ruleset files.
+
+Actually, you may be asked to add more resources, otherwise ClassNotFoundException will be thrown. I've added
+ additionally GMetrics-0.3.jar and ...one more groovy:) It seems, that different rules uses different groovy versions.
+ When I changed version to 1.*, I got one ClassNotFoundException error, else other class was not found with version 2.*.
+ Fortunately, adding two groovy jars solved the problem, however it is very risky action, I'm lucky
+ that it is working without any problems. (Of course this approach is applicable in limited set of situations,
+ actually we don't risk if something goes wrong with codestyle checking. I still finding better solution
+ when I have free time)
+
+After downloading necessary dependencies, this script will be able to generate a report:
+
+```
+GROOVY1_JAR="lib/groovy-all-1.7.10.jar"
+GROOVY2_JAR="lib/groovy-all-2.1.0.jar"
+CODENARC_JAR="lib/CodeNarc-0.27.0.jar"
+LOG4J_JAR="lib/log4j-1.2.17.jar"
+GMETRICS_JAR="lib/GMetrics-0.3.jar"
+BASEDIR="project/"
+CONFIG_DIR="project/config/codenarc"
+
+java -classpath $GROOVY2_JAR:$CODENARC_JAR:$LOG4J_JAR:$CONFIG_DIR:$GMETRICS_JAR:$GROOVY1_JAR org.codenarc.CodeNarc -basedir=$BASEDIR -rulesetfiles="codenarc.xml"
+
+```
+
+### Git integration
+
+This script collects all files in a string and then checks them using "includes" option of command line application
+
+```
+cd project
+output=$(git ls-files -m | grep .groovy)
+PATHS=""
+while read -r line; do
+    PATHS=$PATHS"**/$line,"
+done <<< "$output"
+PATHS=${PATHS::-1}
+
+cd ..
+
+GROOVY1_JAR="libs/groovy-all-1.7.10.jar"
+GROOVY2_JAR="libs/groovy-all-2.1.0.jar"
+CODENARC_JAR="libs/CodeNarc-0.27.0.jar"
+LOG4J_JAR="libs/log4j-1.2.17.jar"
+GMETRICS_JAR="libs/GMetrics-0.3.jar"
+BASEDIR="project/"
+CONFIG_DIR="project/config/codenarc"
+
+java -classpath $GROOVY2_JAR:$CODENARC_JAR:$LOG4J_JAR:$CONFIG_DIR:$GMETRICS_JAR:$GROOVY1_JAR org.codenarc.CodeNarc -basedir=$BASEDIR -includes=$PATHS -rulesetfiles="codenarc.xml"
+
+```
+It is assumed following file structure:
+
+```
+check.sh
+libs
+  groovy-all-1.7.10.jar
+  groovy-all-2.1.0.jar
+  CodeNarc-0.27.0.jar
+  log4j-1.2.17.jar
+  GMetrics-0.3.jar
+project
+  config
+     codenarc
+        codenarc.xml
+
+```
+
+[plugin]:  https://grails.org/plugin/codenarc
+[cl]:  http://codenarc.sourceforge.net/codenarc-command-line.html
