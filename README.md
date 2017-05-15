@@ -1,11 +1,14 @@
 ## Development environment 
 
-Clone project in [clone-dir]
+Clone project and perform following actions
 ```
-cd ..
-docker built -t private/myblog [clone-dir]
-docker run -i -t -d --name "myblog" -v [clone-dir]:/root/src -p 4000:4000 private/myblog /bin/bash
-docker exec -it myblog /bin/bash
+docker-compose up
+```
+
+Attach to cotnainer:
+
+```
+docker exec -it [container-name] /bin/bash
 ```
 
 and then, inside container
@@ -18,5 +21,5 @@ Then the application is available on localhost:4000
 
 To stop container:
 ```
-docker stop [container_name]
+docker-compose stop
 ```
