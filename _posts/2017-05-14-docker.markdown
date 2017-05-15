@@ -6,14 +6,14 @@ categories:
 tags: Docker
 ---
 
-I often hear from different people, that after starting using docker it is hard to refuse it.
+I often hear from many people, that after starting using docker it is hard to refuse it.
 I absolutely agree with this fact. Docker for development has decreased the number of configuration
  errors in our project, so more time can be spent on coding instead of searching why some part doesn't
- works. It is very effective especially if a project contains different parts that are being edited by
+ work. It is very effective especially if a project contains different parts that are being edited by
  different developers, for example frontend and backend. In such case it is undesirable to waist
- frontend developer's time for searching what packages are missing (or other problem)
- for running backend. Docker solves such problem. Moreover, a developer is no longer responsible for
- setting environment for running project, so the enter time to a project has been also decreased.
+ frontend developer's time for searching what package or config line is missing (or some other problem)
+ for running backend. Docker solves such difficulties. Moreover, a developer is no longer responsible for
+ setting environment for running project, so entering time to a project has been also decreased.
  This article is a small advice: how to start using docker in a project.
 
 ### What is expected
@@ -23,10 +23,10 @@ The standard way of entering to a new project is following:
 1. Preparing environment according to demands (OS and settings)
 2. Cloning project
 3. Install necessary packages for development (for example, nodejs, gradle, maven, etc..)
-4. Preparing project before first start (copying dirs, symlinks, setting configuration)
+4. Preparing project before first start (copying dirs, symlinks, setting configuration, hosts, etc)
 
-These actions may take days of time if a project is rather big. Of course, always goes something wrong,
-so other people have to help.
+These actions may take days of time if a project is rather big. Of course, it always goes something wrong,
+so other people have to spend time for helping.
 
 Docker way is rather simpler:
 
@@ -34,9 +34,9 @@ Docker way is rather simpler:
 2. Pulling or building docker image
 3. Run container based on this image
 
-After this step running container is like a virtual box that everything is already prepared for
+After this step running container is like a virtual box where everything inside is already prepared for
 development. It is needed only to run some script to get project running. Moreover, if someone
-accidentally has broken something, a container can be restarted to initial state.
+accidentally has broken something, a container can be easily restarted to initial state.
 
 In some cases several containers can be used for development. For example, some parts can be extracted
  to separated container, like database or frontend.
@@ -60,22 +60,20 @@ To provide it, I create a [Dockerfile][dockerfile]{:target="_blank"} in the root
 
 {% highlight bash %}
 # As a parent image I'm using already prepared ruby image. It allows me
-* to skip ruby installation which is needed for jekyll. There are a lof of prepared images on docker hub.
+# to skip ruby installation which is needed for jekyll. There are a lot of prepared images on docker hub.
 FROM ruby:2.4.1
 
-# Installing necessary packages and creating dir for sources.
-RUN gem install jekyll bundler \
-    && gem install jekyll-paginate \
-    && mkdir /root/src
+# Installing necessary packages
+RUN gem install jekyll:3.4.3 bundler:1.14.6 \
+    && gem install jekyll-paginate:1.1.0
 
 # Make port 4000 to be available from outside the container.
 EXPOSE 4000
 {% endhighlight %}
 
 It is a good style to decrease the number of layers - the number of commands in a Dockerfile. That is
-why RUN command performs 3 actions. Attention, this dockerfile has a significant defect: the last versions
-of packages will be installed. Better to fix versions to avoid appearing some problems after. However,
-now it is ok, but keep it in mind.
+why RUN command performs 3 actions. Also better to fix versions everywhere to avoid appearing some
+problems after.
 
 Then, using this file everyone can build an image:
 
@@ -90,17 +88,17 @@ someone should build it and push before.
 After this, the container can be created using image:
 
 {% highlight bash %}
-# insert real folder path instead if [clone-dir]
+# insert real folder path instead of [clone-dir]
 docker run -i -t -d --name "myblog" -v [clone-dir]:/root/src -p 4000:4000 private/myblog /bin/bash
 {% endhighlight %}
 
 This command creates a container with following options:
 
 * myblog - name of new container
-* [clone-dir] will be mounted to /root/src of the container file system. It will be like shared folder
+* [clone-dir] will be mounted to /root/src of the container's file system. It will be like shared folder
 in virtual machine, so files on host and container will be always the same.
 * Port 4000 of the container will be mapped to port 4000 of host. So localhost:4000 will redirect
-to 4000 port of container.
+to 4000 port of the container.
 * private/myblog is an image name.
 * /bin/bash is a command that will be performed in container.
 
@@ -123,7 +121,7 @@ necessary, change configs and etc. But If I'm going to give this container to so
 I will use 'docker run' with command, that launches server:
 
 {% highlight bash %}
-# insert real folder path instead if [clone-dir]
+# insert real folder path instead of [clone-dir]
 docker run -i -t -d --name "myblog" -v [clone-dir]:/root/src -p 4000:4000 private/myblog somescript.bash
 #It is assumed, somescript.bash contains commands that launch server
 {% endhighlight %}
@@ -144,7 +142,7 @@ services:
     volumes:
      - ./:/root/src
     tty: true
-#    command: bash somescript.bash
+#    command: bash somescript.bash (use this line instead of next line if you want server autostart)
     command: /bin/bash
 ```
 
@@ -162,9 +160,9 @@ but doesn't want to know something about it. Moreover, they even don't want to l
 Backend developers also don't want to deal with frontend. Moreover some people don't want to touch both
 frontend and backend. And the one responsible developer needs to control all parts of the application.
 
-The idea of development environment is following: The frontend serves at 4200 port. The backend serves
-at 8080 port. A proxy is used to redirect api requests from frontend to backend. (4200->8080). I decided
-to place frontend and backend in separate containers:
+The idea of development environment is following: The frontend is served at 4200 port. The backend is
+served at 8080 port. A proxy is used to redirect api requests from frontend to backend. (4200->8080).
+ I decided to place frontend and backend in separate containers:
 
  ![containers](/images/articles/docker-dev/docker-angular-dev.png)
 
@@ -189,7 +187,8 @@ project
 Frontend is actually a folder in a project. proxy-config.json is a file that describes proxy. It is
 an angular cli project specific file, one may use other configured proxy.
 
-This is corresponding docker-compose configuration:
+This is corresponding docker-compose configuration. If someone doesn't want to deal with some part,
+it is needed just uncomment proper lines before starting docker-compose.
 ```
 version: '2'
 services:
@@ -200,8 +199,8 @@ services:
     volumes:
      - ./frontend:/root/src
     tty: true
-    command: bash /root/src/frontend-start.bash
-#    command: /bin/bash
+#  Uncomment next line if you need fronted autostart
+#    command: bash /root/src/frontend-start.bash
   backend-service:
     build: .
     ports:
@@ -211,8 +210,8 @@ services:
     volumes:
      - ./:/root/src
     tty: true
-#    command: /bin/bash
-    command: bash /root/src/backend-start.bash
+#  Uncomment next line if you need backend autostart
+#    command: bash /root/src/backend-start.bash
 ```
 
 When you are using docker compose, you can use internal docker network for accessing to other containers.
@@ -238,15 +237,11 @@ If you are not using docker for development, these arguments should push you sta
 * Study of very important technology
 * Probability to work on several projects using one computer
 
-About drawbacks, I've found only one: remote debugging. It rather comfortable for java projects
-using Idea, but probably it may lead to problems with other stack.
+About drawbacks, I've found only one: remote debugging. It is rather comfortable for java projects
+using Idea, but probably it may lead to problems with other stack of instruments.
 
 For me, docker was a step to creating clusters with micrsoservices. One more fashion and perspective
  direction today.
-
-
-
-
 
 [blog]:  https://github.com/kosbr/kosbr.github.io
 [dockerfile]:  https://github.com/kosbr/kosbr.github.io/blob/master/Dockerfile
