@@ -237,11 +237,20 @@ If you are not using docker for development, these arguments should push you sta
 * Study of very important technology
 * Probability to work on several projects using one computer
 
-About drawbacks, I've found two: The first one is the only possible debugging is remote debugging.
+About drawbacks, I've found following ones:
+
+* The only possible debugging is remote debugging.
  It is rather comfortable for java projects using Idea, but probably it may lead to problems
- with other stack of instruments. The second
- problem is launching ui applications. Docker wasn't created for it, so if your development process
+ with other stack of instruments.
+
+* Launching ui applications. Docker wasn't created for it, so if your development process
  needs some UI (like e2e tests in chrome) it won't be so easy.
+
+* Profiling. Containers JVMs are not visible outside. However, using JProfile I launched agent
+in container and opened one more port to connect it with local JProfiler.
+I wouldn't say it is a big problem.
+
+In other words, since you are using docker, everything has become remote - it must be considered.
 
 For me, docker was a step to creating clusters with micrsoservices. One more fashion and perspective
  direction today.
