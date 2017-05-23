@@ -135,7 +135,7 @@ The file docker-compose.yml (in the root) has following structure:
 ```
 version: '2'
 services:
-  kameleoon:
+  myblog:
     image: private/myblog
     ports:
      - "4000:4000"
