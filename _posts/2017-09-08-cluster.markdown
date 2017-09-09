@@ -1,0 +1,66 @@
+---
+layout: post
+title:  "Cluster structure"
+date:   2017-09-08 10:30:39 +0600
+categories:
+tags: Docker
+---
+
+I wonder how easy a simple cluster with microservices can be created today.
+Thanks to such projects like docker swarm and kubernetes.
+You don't have to write your own soft for cluster management, most of them have been
+already created. Also, these platforms unify different projects' structures and it is
+easier to support them by different engineers. Docker swarm project seems to be the easiest
+and best solution for coming into the microservices' world.  Despite the creation of a
+cluster may take several minutes with a few commands, a lot of work should be done in
+order to provide reliability, flexibility, and scalability of the whole application.
+Docker swarm is a very powerful instrument and it provides great possibilities - our mission
+is to use it in right way. In this post, I suggest one of the infinite numbers of solutions
+for simple application.
+
+### Requirements to a cluster application
+
+In educational purposes, let's make a cluster for the simple CRUD application. Since we are going to implement it in microservices' architecture,
+ the following requirements are expected:
+
+* Scalability (Load can be easily increased by adding new nodes)
+* Reliability(Node's fail should be almost invisible to a user)
+* Transparency (We must keep all mircoservices under the control and don't be perplexed when something is wrong )
+* The safe and easy updating process
+
+### Application description
+
+The application will be divided into two microservices.
+The first one is responsible for data storage. The second one will provide REST API access to it.
+The distributed cassandra database will be used as a data storage.
+The initial cassandra cluster will contain two nodes, but the number can be easily increased in order to provide better performance and reliability.
+The REST API access will be provided by several microservises.
+To make available switching between them without session loss, a session will be kept in a Redis storage.
+To simplify I'm not going to create a Redis cluster. If Redis fails, all sessions will be lost.
+Let it be the one the points to improve in future.
+
+I'm going to create several instances of the storage application and several instances
+of the "gate" application with REST API. All clients will be distributed between all "gate"
+instances. Every "gate" instance will request storage instance.  Internal swarm load balancer
+will redirect these internal requests to provide all storage instances have the same load.
+Every storage instance will request cassandra cluster and be tolerant if the defined number
+of nodes are failed.
+
+
+### Monitoring
+
+Imagine, in described above system something went wrong. For example,
+A client complains that output data is invalid.
+It is needed to see logs to understand what is going on.
+ Here we have two problems:
+* If the number of instances is big it is hard to manage with logs
+* If a container was removed, all logs are removed too.
+
+As a conclusion, we have to use improved logging. It can be done in several ways, here is
+one of them.
+A popular stack is logstash+elasticsearch+kibana. Every microservice produces several log
+files. Every log file is being monitored by logstash, which is situated in the same docker
+container. When a new line appears in log file, it immediately parsed by lostash and sent
+ to elasticsearch system. It provides storing all logs from the whole cluster into one
+  distributed (tolerant to node's fail) place. The Kibana instrument gives a good instrument
+   for reading  and management with logs.
