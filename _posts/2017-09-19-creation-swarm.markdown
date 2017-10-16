@@ -77,6 +77,8 @@ docker service create \
   --env CASSANDRA_SEEDS=cassandra_2 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra1 == true' \
+  --limit-memory="2500m" \
+  --reserve-memory="2500m" \
   cassandra:3.11
 
 docker service create \
@@ -88,6 +90,8 @@ docker service create \
   --env CASSANDRA_SEEDS=cassandra_1 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra2 == true' \
+  --limit-memory="2500m" \
+  --reserve-memory="2500m" \
   cassandra:3.11
 {% endhighlight %}
 
