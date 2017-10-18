@@ -47,8 +47,8 @@ docker swarm join-token manager
 {% highlight bash %}
 docker node update --label-add cassandra2=true cassandra2
 docker node update --label-add cassandra1=true cassandra1
-docker node update --label-add elastic1=true elastic1
-docker node update --label-add elastic2=true elastic2
+docker node update --label-add elastic=true elastic
+docker node update --label-add cassandra3=true cassandra3
 docker node update --label-add worker=true worker1
 docker node update --label-add worker=true worker2
 docker node update --label-add worker=true worker3
@@ -74,7 +74,7 @@ docker service create \
   --network my-network \
   --publish 9042:9042 \
   --env CASSANDRA_BROADCAST_ADDRESS=cassandra_1 \
-  --env CASSANDRA_SEEDS=cassandra_2 \
+  --env CASSANDRA_SEEDS=cassandra_2,cassandra_3 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra1 == true' \
   --limit-memory="2500m" \
@@ -87,9 +87,22 @@ docker service create \
   --network my-network \
   --publish 9043:9042 \
   --env CASSANDRA_BROADCAST_ADDRESS=cassandra_2 \
-  --env CASSANDRA_SEEDS=cassandra_1 \
+  --env CASSANDRA_SEEDS=cassandra_1,cassandra_3 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra2 == true' \
+  --limit-memory="2500m" \
+  --reserve-memory="2500m" \
+  cassandra:3.11
+  
+  docker service create \
+  --name cassandra_3 \
+  --replicas=1 \
+  --network my-network \
+  --publish 9043:9042 \
+  --env CASSANDRA_BROADCAST_ADDRESS=cassandra_3 \
+  --env CASSANDRA_SEEDS=cassandra_1,cassandra_2 \
+  --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
+  --constraint 'node.labels.cassandra3 == true' \
   --limit-memory="2500m" \
   --reserve-memory="2500m" \
   cassandra:3.11
@@ -115,9 +128,9 @@ docker service  create  \
 
 If redis is moved, data will be destroyed. Sometimes it is ok.
 
-### Step7: Create elasticseach cluster
+### Step7: Create elasticseach service
 
-On every elastic node
+On elastic node
 {% highlight bash %}
 sysctl -w vm.max_map_count=262144
 mkdir /es-data
@@ -126,37 +139,14 @@ chmod -R 777 /es-data/
 
 
 {% highlight bash %}
-docker service create --name elastic2 \
+docker service create --name elastic \
   --network my-network \
-  --constraint 'node.labels.elastic2 == true' \
-  -p 9202:9200 \
-  -p 9302:9301 \
-  --env cluster.name=test-cluster \
-  --env "discovery.zen.ping.unicast.hosts=elastic1,elastic3" \
-  --mount type=bind,source=/es-data,destination=/usr/share/elasticsearch/data \
-  docker.elastic.co/elasticsearch/elasticsearch:5.5.2
-
-docker service create --name elastic1 \
-  --network my-network \
-  --constraint 'node.labels.elastic1 == true' \
-  -p 9201:9200 \
+  --constraint 'node.labels.elastic == true' \
+  -p 9200:9200 \
   -p 9301:9301 \
-  --env cluster.name=test-cluster \
-  --env "discovery.zen.ping.unicast.hosts=elastic2,elastic3" \
   --mount type=bind,source=/es-data,destination=/usr/share/elasticsearch/data \
   docker.elastic.co/elasticsearch/elasticsearch:5.5.2
 
-docker service create --name elastic3 \
-  --network my-network \
-  --constraint 'node.labels.strongworker == true' \
-  -p 9203:9200 \
-  -p 9303:9301 \
-  --env cluster.name=test-cluster \
-  --limit-memory="2500m" \
-  --reserve-memory="2500m" \
-  --env "discovery.zen.ping.unicast.hosts=elastic2,elastic1" \
-  --env "node.data=false" \
-  docker.elastic.co/elasticsearch/elasticsearch:5.5.2
 {% endhighlight %}
 
 issues with network.publish_host???
@@ -174,7 +164,6 @@ docker service create --name kibana \
   -p 5601:5601 \
 docker.elastic.co/kibana/kibana:5.5.2
 {% endhighlight %}
-
 
 ### Step 9: Add storage application
 
