@@ -79,7 +79,7 @@ docker service create \
   --constraint 'node.labels.cassandra1 == true' \
   --limit-memory="2500m" \
   --reserve-memory="2500m" \
-  cassandra:3.11
+  repo.treescale.com/kosbr/cassandra:3.11
 
 docker service create \
   --name cassandra2 \
@@ -92,7 +92,7 @@ docker service create \
   --constraint 'node.labels.cassandra2 == true' \
   --limit-memory="2500m" \
   --reserve-memory="2500m" \
-  cassandra:3.11
+  repo.treescale.com/kosbr/cassandra:3.11
   
   docker service create \
   --name cassandra3 \
@@ -105,7 +105,7 @@ docker service create \
   --constraint 'node.labels.cassandra3 == true' \
   --limit-memory="2500m" \
   --reserve-memory="2500m" \
-  cassandra:3.11
+  repo.treescale.com/kosbr/cassandra:3.11
 {% endhighlight %}
 
 Then, create keyspace with simple replication strategy and replications number = 2. Don't
@@ -122,8 +122,8 @@ docker service  create  \
     --network my-network \
     --config redisconf \
     --constraint 'node.labels.worker == true' \
-     --limit-memory="2000m" \
-     --reserve-memory="2000m" \
+     --limit-memory="1500m" \
+     --reserve-memory="1500m" \
      redis:3.2.0 redis-server /redisconf
 
 {% endhighlight %}
@@ -179,10 +179,23 @@ docker service create --name storage \
   --replicas=1 \
   --constraint 'node.labels.worker == true' \
   --env LOG_DIR=/var/log/guestbook-storage \
-  --limit-memory="1600m" \
-  --reserve-memory="1600m" \
+  --limit-memory="1800m" \
+  --reserve-memory="1800m" \
   -p 8081:8081 \
-repo.treescale.com/kosbr/guestbook/storage:1.5
+repo.treescale.com/kosbr/guestbook/storage:1.6
+{% endhighlight %}
+
+
+{% highlight bash %}
+docker service create --name gate \
+  --network my-network \
+  --replicas=1 \
+  --constraint 'node.labels.worker == true' \
+  --env LOG_DIR=/var/log/guestbook-gate \
+  --limit-memory="1800m" \
+  --reserve-memory="1800m" \
+  -p 8082:8082 \
+repo.treescale.com/kosbr/guestbook/gate:1.0-SNAPSHOT
 {% endhighlight %}
 
 
