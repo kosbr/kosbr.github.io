@@ -69,12 +69,12 @@ And then from the manager node:
 
 {% highlight bash %}
 docker service create \
-  --name cassandra_1 \
+  --name cassandra1 \
   --replicas=1 \
   --network my-network \
   --publish 9042:9042 \
-  --env CASSANDRA_BROADCAST_ADDRESS=cassandra_1 \
-  --env CASSANDRA_SEEDS=cassandra_2,cassandra_3 \
+  --env CASSANDRA_BROADCAST_ADDRESS=cassandra1 \
+  --env CASSANDRA_SEEDS=cassandra2,cassandra3 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra1 == true' \
   --limit-memory="2500m" \
@@ -82,12 +82,12 @@ docker service create \
   cassandra:3.11
 
 docker service create \
-  --name cassandra_2 \
+  --name cassandra2 \
   --replicas=1 \
   --network my-network \
   --publish 9043:9042 \
-  --env CASSANDRA_BROADCAST_ADDRESS=cassandra_2 \
-  --env CASSANDRA_SEEDS=cassandra_1,cassandra_3 \
+  --env CASSANDRA_BROADCAST_ADDRESS=cassandra2 \
+  --env CASSANDRA_SEEDS=cassandra1,cassandra3 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra2 == true' \
   --limit-memory="2500m" \
@@ -95,12 +95,12 @@ docker service create \
   cassandra:3.11
   
   docker service create \
-  --name cassandra_3 \
+  --name cassandra3 \
   --replicas=1 \
   --network my-network \
-  --publish 9043:9042 \
-  --env CASSANDRA_BROADCAST_ADDRESS=cassandra_3 \
-  --env CASSANDRA_SEEDS=cassandra_1,cassandra_2 \
+  --publish 9044:9042 \
+  --env CASSANDRA_BROADCAST_ADDRESS=cassandra3 \
+  --env CASSANDRA_SEEDS=cassandra1,cassandra2 \
   --mount type=bind,source=/cassandra-data,destination=/var/lib/cassandra \
   --constraint 'node.labels.cassandra3 == true' \
   --limit-memory="2500m" \
@@ -122,6 +122,8 @@ docker service  create  \
     --network my-network \
     --config redisconf \
     --constraint 'node.labels.worker == true' \
+     --limit-memory="2000m" \
+     --reserve-memory="2000m" \
      redis:3.2.0 redis-server /redisconf
 
 {% endhighlight %}
@@ -145,6 +147,8 @@ docker service create --name elastic \
   -p 9200:9200 \
   -p 9301:9301 \
   --mount type=bind,source=/es-data,destination=/usr/share/elasticsearch/data \
+  --limit-memory="2500m" \
+  --reserve-memory="2500m" \
   docker.elastic.co/elasticsearch/elasticsearch:5.5.2
 
 {% endhighlight %}
@@ -156,11 +160,13 @@ issues with network.publish_host???
 {% highlight bash %}
 docker service create --name kibana \
   --network my-network \
-  --constraint 'node.labels.worker == true' \
-  --env ELASTICSEARCH_URL=http://elastic3:9200 \
+  --constraint 'node.labels.strongworker == true' \
+  --env ELASTICSEARCH_URL=http://elastic:9200 \
   --env ELASTICSEARCH_USERNAME=elastic \
   --env ELASTICSEARCH_PASSWORD=changeme \
   --env SERVER_PORT=5601 \
+  --limit-memory="2000m" \
+  --reserve-memory="2000m" \
   -p 5601:5601 \
 docker.elastic.co/kibana/kibana:5.5.2
 {% endhighlight %}
