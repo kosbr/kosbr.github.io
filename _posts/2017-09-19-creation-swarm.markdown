@@ -147,8 +147,8 @@ docker service create --name elastic \
   -p 9200:9200 \
   -p 9301:9301 \
   --mount type=bind,source=/es-data,destination=/usr/share/elasticsearch/data \
-  --limit-memory="2500m" \
-  --reserve-memory="2500m" \
+  --limit-memory="2800m" \
+  --reserve-memory="2800m" \
   docker.elastic.co/elasticsearch/elasticsearch:5.5.2
 
 {% endhighlight %}
@@ -160,7 +160,7 @@ issues with network.publish_host???
 {% highlight bash %}
 docker service create --name kibana \
   --network my-network \
-  --constraint 'node.labels.strongworker == true' \
+  --constraint 'node.labels.worker == true' \
   --env ELASTICSEARCH_URL=http://elastic:9200 \
   --env ELASTICSEARCH_USERNAME=elastic \
   --env ELASTICSEARCH_PASSWORD=changeme \
