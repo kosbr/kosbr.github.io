@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Cluster's structure"
+title:  "Playground cluster by docker swarm"
 date:   2017-09-08 10:30:39 +0600
 categories:
 tags: Docker
@@ -12,29 +12,31 @@ Thanks to such projects like [docker swarm][swarm]{:target="_blank"} and
 You don't have to write your own soft for cluster management, most of them have been
 already created. Also, these platforms unify different projects' structures and it is
 easier to support them by different engineers. Docker swarm project seems to be the easiest
-and best solution for coming into the microservices' world.  Despite the creation of a
+and the best solution for coming into the microservices' world.  Despite the creation of a
 cluster may take several minutes with a few commands, a lot of work should be done in
 order to provide reliability, flexibility, and scalability of the whole application.
 Docker swarm is a very powerful instrument and it provides great possibilities - our mission
 is to use it in right way. In this post, I suggest one of the infinite numbers of solutions
-for simple application.
+for simple application. It should be noted, everything in this post is for education
+purposes - just to get known what can be done with docker swarm.
 
 ### Requirements to a cluster application
 
-In educational purposes, let's make a cluster for the simple CRUD application. Since we are going to implement it in microservices' architecture,
+In educational purposes, let's make a cluster for the simple CRUD application.
+Since we are going to implement it in microservices' architecture,
  the following requirements are expected:
 
 * Scalability (Load can be easily increased by adding new nodes)
 * Reliability(Node's fail should be almost invisible to a user)
 * Transparency (We must keep all mircoservices under the control and don't be perplexed when something is wrong )
-* The safe and easy updating process
+* Safe and easy updating process
 
 ### Application description
 
 The simple CRUD application will be divided into two microservices.
 The first one is responsible for data storage. The second one will provide REST API access to it.
 The distributed cassandra database will be used as a data storage.
-The initial cassandra cluster will contain two nodes, but the number can be
+The initial cassandra cluster will contain three nodes, but the number can be
 easily increased in order to provide better performance and reliability.
 The REST API access will be provided by several instances of the microservice.
 To make available switching between them without session loss, a session will
@@ -43,22 +45,22 @@ To simplify I'm not going to create a Redis cluster.
 If Redis fails, all sessions will be lost.
 Let it be the one of the points to improve in future.
 
-I'm going to create several instances of the storage microservice and several instances
+ ![Application description](/images/articles/cluster/app.png)
+
+I'm going to create several instances of the "storage" microservice and several instances
 of the "gate" microservice with REST API. All clients will be distributed between all "gate"
-instances. Every "gate" instance will request storage instance.  Internal swarm load balancer
-will redirect these internal requests to provide all storage instances have the same load.
+instances. Every "gate" instance will request "storage" instance.  Internal swarm load balancer
+will redirect these internal requests to provide all "storage" instances have the same load.
 Every storage instance will request cassandra cluster and be tolerant if the defined number
 of nodes are failed.
-
 
 ### Monitoring
 
 Imagine, in described above system something went wrong. For example,
-a client complains that output data is invalid.
-It is needed to see logs to understand what is going on.
- Here we have two problems:
-* If the number of instances is big it is hard to manage with logs
-* If a container was removed, all logs are removed too.
+an API user complains that output data is invalid.
+It is needed to see logs to understand what is going on, but there are two problems:
+* If the number of instances is big it is hard to manage with logs on every node on every service
+* If a container was removed, all logs are removed too (in case there is no volume for logs).
 
 As a conclusion, we have to use improved logging. It can be done in several ways, here is
 one of them.
@@ -66,107 +68,152 @@ A popular stack is
 [Logstash][logstash]{:target="_blank"}+[Elasticsearch][elastic]{:target="_blank"}
 +[Kibana][kibana]{:target="_blank"}.
 Every microservice produces several log
-files. Every log file is being monitored by logstash, which is situated in the same docker
+files. Every log file is being monitored by logstash, which is located in the same docker
 container. When a new line appears in log file, it is immediately parsed by lostash and sent
  to elasticsearch system. It provides storing all logs from the whole cluster into the one
-  distributed (tolerant to node's fail) place. The Kibana gives a good user interface
-   for reading  and management logs.
+  place. The Kibana gives a good user interface for reading  and management logs.
+
+![Logs scheme](/images/articles/cluster/logs.png)
+
+Good question is what if elasticsearch has been destroyed, but I need to see logs? There are at least two
+approaches on this problem:
+
+* It is not problem, if volumes are used for logs, all logs can be found directly in the nodes.
+* It is possible to use elasticsearch cluster and copy all logs on another elasticsearch node. Also even Kibana
+can be doubled for reliability.
+
+It should be noted, that I'm describing rather seldom case now. If elasticsearch is not available, but
+the application works, all is needed to be done is make elasticsearch working again.
+Bad situation is when additionally the application have broken and it is needed to see logs.
+Since this cluster is educational, let's
+prefer the first approach - it is not a problem :).
 
 ### Cluster structure
 
+As you know, docker swarm is responsible for choice of hosting node, however, I'm able to set up conditions.
+Ideally, I can provide several nodes to the swarm, add several services to it and don't care about where every
+service is. There is no difference from outside, because swarm redirects requests from every node to necessary
+one. It is better described in the official docker swarm documentation.
 
-It contains nodes with following roles:
+In real life it is impossible to completely rely on swarm. Some nodes are too weak for hosting some services,
+other services should be attached to corresponding special nodes due to volume exists. As a result, sometimes
+it is needed to tell docker swarm where to host a service. My cluster's structure is below:
 
-**manager role**: A docker swarm manager node. It is responsible for cluster management.
-I don't assign services to these nodes except Portainer, but it is technically possible.
-[Portainer][portainer]{:target="_blank"} is just a good instrument for cluster monitoring and
-it should be hosted by manager node.
-It is needed at least one node with such role, however, better if the number is bigger.
+![Nodes](/images/articles/cluster/nodes.png)
 
-**elastic_N role**: This node is responsible for hosting elasticsearch container (service) with
-elasticsearch node with Id =N inside.  Strictly, the only one node can play role
-'elasticN'. The scalability is achieved by different N values. In other words, if one needs
-elastic cluster of 3 nodes, every elasticsearch node should be launched in separate container
-and hosted on separate machine (docker swarm node).
-The reason is that elasticsearch container is actually not stateless. To avoid data loss,
-I have to use docker volume, in other words, the elasticsearch data is written on host
-machine folder. That's why I can't simply move elasticsearch container to another node.
- As a consequence, every elasticsearch container(service) is linked to corresponding node.
+I have 9 independent nodes (VDS) in the cluster, two of them are manager. According to the description above, 9 services should be deployed
+at this cluster:
 
-**cassandra_N role**: This node is responsible for hosting container (service) with cassandra node with Id=N inside.
-  For example, if I'm going to have a cassandra cluster with two nodes,
-  I will have to create two docker swarm nodes for every cassandra node.
-  The reason is the same like in elasticsearch - volumes.
+1. Cassandra 1 service
+2. Cassandra 2 service
+3. Cassandra 3 service
 
-**worker role**: This node will host all microservices, Redis and Kibana.
- More worker nodes I have - more resources are available, and as consequence,
- more instances of microservices can be created.
+These three separate services form a cassandra cluster inside the main cluster. The thing is that cassandra
+cluster is another level cluster. Every cassandra instance knows that it is in cassandra cluster, but it
+knows nothing about the swarm cluster. It can be thought as docker packs separately every cassandra instance
+into the container, names it as a services and adds it to the swarm. The swarm even doesn't know that
+cassandraN services are united into own cluster.
 
- My cluster's structure is shown below.
+Since all containers are stateless, volumes are used for storing data. In other words, a container will store
+data on the filesystem of the hosting node. This fact binds node and container, that is why I've
+prepared special nodes for hosting every cassandra service (one the picture such nodes are marked with lock).
 
- todo тут картинка
+4. Elasticsearch service
 
- At first sight, this picture seems to be too complicated.
- I hope following remarks make it more clear.
- Every purple rectangle is a docker swarm node.
- Every swarm node except one manager contains a docker containers (white 3D parallelepipeds).
- To achieve ratio one node - one container I've increased the number of "worker" nodes to  6.
- Actually, I had fewer nodes and some nodes host more than one container,
- but it is not good on the picture. So let's keep in mind, that in some cases "worker"
-  nodes may contain several containers (services).
-  Here is the list of the cluster:
+This is one more service, that is used for storing data. There is also special node for this service.
 
-**cassandra1 and cassandra2 nodes**: I have cassandra cluster of 2 nodes. As I said before,
-every cassandra node
-is linked to corresponding docker swarm node. So I have two docker swarm nodes with
-cassandra service inside each node.  Important, please do not mix terms docker swarm
-node and cassandra node. I try to be clear, but keep in mind it. All services, connected
- to cassandra should know about both services and if one node is failed, another one
- will provide work of the whole system (Only if you use cassandra in right way,
- see levels of consistency). Also, if the docker swarm node is ok, docker swarm will try to
- recreate cassandra instance.
+5. Storage service
+6. Gate service
 
-**worker2 and worker3 nodes**: These nodes host the instances of the storage service.
- The storage application inside container uses both cassandra nodes for data management.
- This application logs to some file, which is parsed by logstash. If one service is failed,
-  another one will take a load. That is why these services should be placed in different
-   nodes. However, in such case docker swarm will immediately create a new instance, probably
-   on the another node.
+These services are designed to be launched in parallel with other same instances. The main difference with the
+cassandraN services is that every instance of the storage or gate service doesn't know information
+ about others. For example, one storage service can't know the number of another instances of this service.
+ These services are stateless, so I don't care about hosting nodes, but docker swarm does.
 
-**worker6 node**: This node contains a Redis service. If this node is failed,
-Redis service will be created on another "worker" node and will be again available,
-however, the data will be lost in the old container. It is the weak place in the cluster,
-but in some cases, it is not fatal.
+7. Kibana
+8. Redis
 
-**worker4 and worker5 nodes**: These nodes host the instances of the "gate" service.
- Every one of them provides endpoint - external clients may use the cluster application
- throw these endpoints. Common Redis service is used by all "gate" instances for sharing
- sessions. It makes a user able to change node without session loss. To provide needed
- monitoring, all logs are parsed by stash as for a storage service. All logstash instances
- send logs to elasticsearch. If one "gate" service is failed, another one will take a load.
- However, soon the failed service will be recreated, probably on another "worker" node.
+According to the plan, only one instance per service is launched. Despite Redis keeps data, it is not
+bound to a node, as it was described before, we admit that sometimes sessions will be erased. It should be
+noted, that it is possible only in two cases: when redis is failed and should be relaunched or when an
+administrator "rebalances" cluster for getting better services per nodes distribution.
 
-**elastic1 and elastic2 nodes**: todo
+9. Portainer
 
-**worker1 node**: todo
+Portainer is a just pretty UI for managing with cluster.
 
-**manager1 and manager2 nodes**: todo
+That's all about description of the services. As you may see from the picture, I have 9 nodes and 4 of them
+are specially prepared for corresponding services. The rest services are distributed over the rest nodes. To
+make it more clear, I use different colors for such "free" nodes and containers.
 
-It is important, that I don't specify the concrete nodes for my services, Kibana and Redis.
- I just told the swarm to place storage service on some "worker" nodes in defined
- number instances. So the number of workers are shown above only for connection with
- the picture.
+Docker swarm knows the parameters of every node (memory, CPU) and the demands and limits of every service. It
+helps to achieve better balance and to avoid fails.
 
-Also, it should be mentioned, that in terms of the docker swarm project,
- every node which is not a manager is a worker. So strictly speaking, both
- cassandra nodes and both elasticsearch nodes are workers, but we don't call them because
-  they are specific.
+All services are connected by overlay docker network. It makes them visible for others. Those services,
+which have more than one instance are visible for others like one instance. The internal docker load balancer
+is used for requests distribution.
 
-### Weak places
-
-**todo Here the scenario of the cassandra seed node fail should be explained. (elasticsearch)**
 
 ### How does it work
+
+Actually, I like the result.
+
+Here is all my nodes from the command line of the manager node:
+
+![Nodes](/images/articles/cluster/nodes-list.png)
+
+And services with actual state:
+
+![Services](/images/articles/cluster/services-list.png)
+
+The portainer can prepare a good visualisation for a cluster:
+
+![Visualisation](/images/articles/cluster/visual.png)
+
+And also it provides a good UI, for example, here I can easily scale a service.
+
+![Services in the portainer](/images/articles/cluster/services-portainer.png)
+
+Finally, logs in Kibana. You see similar logs but from different instances. All logs can be easily
+filtered.
+
+![Kibana logs](/images/articles/cluster/kibana.png)
+
+### When something goes wrong
+
+If the cluster is well balanced (bad balanced means, for example, the same services are placed on the one
+node) and then something happens... For example, some service or even node can be destroyed. No matter,
+anyway docker swarm immediately got state that is not equal to wished one. Then some actions should be done.
+If a leader manager was lost, another manager takes this role. Also docker will try to create new instances of
+the services, probably on other nodes to make state to be as wished one. That's why, ideally, we should always
+have the additional resources in the cluster. In my case, some services can't be recreated on other nodes -
+it is cassandra services and elastic. However, that is why I have several cassandra services and it was
+explained before, that in my case the risk of elasticsearch fail is allowed (only logs are at stake).
+
+### What can be (must be) improved
+
+Or what should be done before this cluster goes to production:
+
+Necessary:
+
+1. Use encryption in overlay docker network (built in docker, just switch on)
+2. Close all ports unused from outside by firewall on the every node. All requests to open
+ports should be performed through SSL.
+3. Redis should be a cluster, probably even outside the swarm
+
+Probably:
+
+1.Elasticsearch should be a cluster to avoid problems with logging
+
+It should be noted, that I used only free instruments. There are a lot commercial good instruments for
+monitoring cluster. Probably, it will be needed as soon as load significantly grows.
+
+### Good advantage of this technology stack
+
+Note, that I haven't mentioned about the internal structure of the application (storage and gate services).
+It means, that these applications can be created with any technology. And that is the advantage of the stack
+and architecture - we can use the best instrument for the
+problem of microservice.
 
 [portainer]:  https://portainer.io/
 [kibana]:  https://www.elastic.co/products/kibana
