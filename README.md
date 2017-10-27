@@ -14,7 +14,6 @@ docker exec -it [container-name] /bin/bash
 and then, inside container
 
 ```
-cd ~/src
 jekyll serve --host 0.0.0.0
 ```
 Then the application is available on localhost:4000
