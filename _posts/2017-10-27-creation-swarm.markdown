@@ -1,13 +1,13 @@
 ---
 layout: post
 title:  "docker swarm cluster creation"
-date:   2017-09-19 10:30:39 +0600
+date:   2017-10-27 10:30:39 +0600
 categories:
-tags: Docker
+tags: Docker Swarm Microservices
 ---
 
 In the previous post, I described the docker swarm cluster for simple CRUD application. This article clarifies
-how to create it step by step. Please, look throw the previous post before reading this one.
+how to create it step by step. Please, look throw the [previous][previous]{:target="_blank"} post before reading this one.
 ![Nodes](/images/articles/cluster/nodes-list.png)
 
 ### Given
@@ -92,7 +92,7 @@ It isn't a necessary step, Portainer is just a UI for cluster management. I use 
 
 ### Step 3: Create a Cassandra cluster
 
-As it was written in the previous article, 3 Cassandra nodes are going to be created. It terms of the docker
+As it was written in the [previous][previous]{:target="_blank"} article, 3 Cassandra nodes are going to be created. It terms of the docker
 swarm, 3 separate services will be created. Every service will contain a Cassandra instance and those
 Cassandra instances will form the Cassandra cluster.
 
@@ -238,7 +238,7 @@ docker.elastic.co/kibana/kibana:5.5.2
 ### Step 9: Add storage application (2 replicas)
 
 My storage application reads environment variables CASSANDRA_HOSTS and CASSANDRA_KEYSPACE for
-connection to the database. It is described in the previous post, that this image contains the application
+connection to the database. It is described in the [previous][previous]{:target="_blank"} post, that this image contains the application
 with logstash instance. Logstash parses a log file and sends data to the elasticsearch. Logstash is configured
 by config file, so I just hardcoded there the elasticsearch host. However, it would be much more pretty if
 it was passed also throw docker service command. It is not difficult, but right now I decided to make it
@@ -313,11 +313,4 @@ If downloading an image takes a lot of time, better manually download it from ev
 can be used. It decreases the time for the first start of a service and decreases downtime if a service
 moves to another node because of failure.
 
-
-
-
-
-
-
-
-
+[previous]: /2017/10/27/cluster.html

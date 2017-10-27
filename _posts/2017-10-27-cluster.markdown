@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Playground cluster by docker swarm"
-date:   2017-09-08 10:30:39 +0600
+date:   2017-10-27 10:30:39 +0600
 categories:
-tags: Docker
+tags: Docker Swarm Microservices
 ---
 
 I wonder how easy a simple cluster with microservices can be created today.
@@ -218,6 +218,8 @@ Note, that I haven't mentioned about the internal structure of the application (
 It means, that these applications can be created with any technology. And that is the advantage of the technology stack
 and architecture - we can use the best instrument for the particular problem in every microservice.
 
+My [next][next]{:target="_blank"}  post is about how to deploy this cluster step by step.
+
 [portainer]:  https://portainer.io/
 [kibana]:  https://www.elastic.co/products/kibana
 [elastic]:  https://www.elastic.co/products/elasticsearch
@@ -225,3 +227,4 @@ and architecture - we can use the best instrument for the particular problem in 
 [swarm]:  https://docs.docker.com/engine/swarm/
 [logstash]: https://www.elastic.co/products/logstash
 [redis]: https://redis.io/
+[next]: /2017/10/27/creation-swarm.html
