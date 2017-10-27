@@ -93,13 +93,13 @@ After this, the container can be created using image:
 
 {% highlight bash %}
 # insert real folder path instead of [clone-dir]
-docker run -i -t -d --name "myblog" -v [clone-dir]:/root/src -p 4000:4000 private/myblog /bin/bash
+docker run -i -t -d --name "myblog" -v [clone-dir]:/kosbr -p 4000:4000 private/myblog /bin/bash
 {% endhighlight %}
 
 This command creates a container with following options:
 
 * myblog - name of new container
-* [clone-dir] will be mounted to /root/src of the container's file system. It will be like shared folder
+* [clone-dir] will be mounted to /kosbr of the container's file system. It will be like shared folder
 in virtual machine, so files on host and container will be always the same.
 * Port 4000 of the container will be mapped to port 4000 of host. So localhost:4000 will redirect
 to 4000 port of the container.
