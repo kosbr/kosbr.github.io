@@ -9,7 +9,7 @@
 title: Kosbr's blog
 email: kosbr.dev@yandex.com
 description: > # this means to ignore newlines until "baseurl:"
-  Author: Konstantin Bryazgin - Java Developer. You are visiting my personal technical blog.
+  Author: Konstantin Bryazgin - Software engineer. You are visiting my personal technical blog.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://kosbr.guthub.io" # the base hostname & protocol for your site
 
