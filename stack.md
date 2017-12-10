@@ -1,6 +1,6 @@
 ---
-layout: cv
-permalink: /cv/
+layout: stack
+permalink: /stack/
 logo: logo-windsurf
 intro: Kosbr
 ---
