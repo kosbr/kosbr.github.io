@@ -11,6 +11,7 @@ out that the best approach to this problem is [OpenCV library][opencv]{:target="
 It is a cool library for working with images. It is written for all operation systems, it has rich possibilities,
 it has good documentation. However, I used to work with Java, so I've found java wrapper for
 it - [JavaCV][javacv]{:target="_blank"}
+![Plan](/images/articles/opencv/toy.jpg)
 
 Unfortunately, when I was writing this article the documentation of JavaCv was not ideal. First time I even started to
 use C++, but then I found one secret, that helped me to use javacv. The thing is that all classes and methods in
@@ -20,8 +21,6 @@ and apply it to javaCV.
 ### Practise exercise
 
 To have a practise I decided to create detector of the toy.
-
-![Plan](/images/articles/opencv/toy.jpg)
 
 This was my plan:
 1. To do a lot of photos with the toy (positive selection)

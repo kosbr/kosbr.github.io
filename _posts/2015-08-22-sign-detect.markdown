@@ -11,6 +11,7 @@ There is a business process which includes printing some document and signing it
  don't use additional alerts and messages to be more user-friendly. I was asked to solve this problem and I've done it.
  In this post I'm going to describe solution, which uses opecv+javacv. I told about this libraries in
  [previous post][previousPost].
+![Positive selection](/images/articles/opencv/many_signs.jpg)
 
 ### The problem formulation
 

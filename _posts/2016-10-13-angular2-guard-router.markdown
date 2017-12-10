@@ -9,7 +9,8 @@ tags: Angular2
 A few weeks ago while I was developing my Angular 2 application I faced with problem: How to hide routerLinks if the 
 transition is not allowed? I couldn't find any simple solution so I had to create my own one. Also I've found the similar
 question in [stackOverFlow][stackOverFlow]{:target="_blank"} and shared my idea. This post describes this problem and 
-the solution in details. 
+the solution in details.
+ ![Angular2](/images/articles/angular/angular.png)
 
 ### Problem description
 

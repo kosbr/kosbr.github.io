@@ -10,6 +10,7 @@ At the beginning of november I was visiting [Highload][highload]{:target="_blank
 technical trends, best practises by listening to the experienced speakers. However I was attracted to the lecture of
 Alexandr Ziza with loud title - "How to hire a developer for 10 days". It covers the issue of developer's growth and
 opens some not standard instruments for attracting developers to a company. Does you company use it?
+![Workplace](/images/articles/hire/workplace.jpg)
 
 ### Growth graph
 

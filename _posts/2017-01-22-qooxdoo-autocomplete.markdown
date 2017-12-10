@@ -13,7 +13,6 @@ By this moment I have been developing and fixing bugs of the [qooxdoo][qooxdoo]{
  need is already implemented there or it is needed make a tiny modification of existing item to get what you want. I was
   wonder when I realized that there is no autocomplete combobox widget. Moreover, there is almost nothing about it in the
   internet. So I had to do it myself.
-
  ![autocomplete](/images/articles/qooxdoo_autocomplete/autocomplete.gif)
 
  Actually it is easy to do such widget for personal usage,  it can be a task for beginners. The most complex part is

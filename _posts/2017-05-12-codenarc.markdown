@@ -12,6 +12,7 @@ attention on code quality to improve
 at least some parts of project. The main idea, all developers should start writing good code despite
 the rest classes still contain horrible code. In this post I'd like to tell about the system that helps improving style
  in a huge project and share some points about codenarc and its grails plugin.
+![Just a picture](/images/articles/codestyle/messy-code.gif)
 
 I decided to use [Codenarc grails plugin][plugin]{:target="_blank"} for checking style. Actually I hadn't any
 choice for grails project. It generates pretty html report with sorted style violations. When I launched it on the

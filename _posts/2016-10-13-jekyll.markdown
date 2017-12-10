@@ -8,9 +8,10 @@ tags: Jekyll Blog
 
 I have had blog already for 1.5 years by the october 2016. My first blog was created with 
 [https://www.blogger.com][blogger]{:target="_blank"} service which is provided by Google.  This service is rather
-good for classical bloggers, but not for developers. A developer wants own blog to be modern, maybe unique and have a 
+good for classical blogers, but not for developers. A developer wants own blog to be modern, maybe unique and have a
 lot of inserted formatted colored code. So, I decided to close my old blog and create a new one with
  [Jekyll][jekyll]{:target="_blank"} Some advantages of jekyll are described here, I'm sure it will attract you.
+ ![Blog](/images/articles/jekyll/blogging.jpg)
 
 
 ### Design templates

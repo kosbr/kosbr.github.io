@@ -8,6 +8,7 @@ tags: CI
 
 Recently my friend told me about good service of Continuous Integration:  [http:/semaphoreci.com][semaphoreci]{:target="_blank"}.
 Using this service and [bitbucket][bitbucket]{:target="_blank"} it is easy to create free CI system with autodeploy. Let me show how I did it.
+![Deploy schema](/images/articles/ci/semaphore.png)
 
 ### Why do we need it?
 

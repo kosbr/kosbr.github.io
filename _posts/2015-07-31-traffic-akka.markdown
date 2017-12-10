@@ -9,6 +9,7 @@ tags: Akka Training
 I often hear positive feedback about [Akka][akka]{:target="_blank"} in different conferences. I'd like to use it
 in practise, but I haven't appropriate tasks for it. So I decided to try it in training application which emulates
 road traffic.
+![Traffic](/images/articles/akka/traffic.jpg)
 
 Akka is an actor model implementation in scala, but it has also java API. In short, actor model determines actors, which
 all can do something in parallel, create new actors, send and receive messages. It is able to be used in large

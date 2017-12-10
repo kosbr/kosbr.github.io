@@ -15,6 +15,8 @@ I absolutely agree with this fact. Docker for development has decreased the numb
  for running backend. Docker solves such difficulties. Moreover, a developer is no longer responsible for
  setting environment for running project, so entering time to a project has been also decreased.
  This article is a small advice: how to start using docker in a project.
+  ![Migrating to docker](/images/articles/docker-dev/migrating_to_docker.jpg)
+
 
 ### What is expected
 

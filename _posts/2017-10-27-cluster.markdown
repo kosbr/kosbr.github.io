@@ -19,6 +19,7 @@ Docker swarm is a very powerful instrument and it provides great possibilities -
 is to use it in right way. In this post, I suggest one of the infinite numbers of solutions
 for simple application. It should be noted, everything in this post is for education
 purposes - just to get known what can be done with docker swarm.
+ ![Application description](/images/articles/cluster/app.png)
 
 ### Requirements to a cluster application
 

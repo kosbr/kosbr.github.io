@@ -10,7 +10,8 @@ A few weeks ago Google published Angular 2.0 final release. I've already tried i
 face with some problem, it probably will be difficult to find solution in the internet. Angular2 has been strongly changed 
 since rc1 was published. That's why there are a lot of outdated information. I think we must fix this problem and 
 publish a lot of articles and posts about angular2. My contribution is article about building the application with 
-angular2 client. 
+angular2 client.
+ ![War archive](/images/articles/angular/war-archive.jpg)
 
  
 ### Build requirements

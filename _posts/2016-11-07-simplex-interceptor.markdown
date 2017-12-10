@@ -10,6 +10,7 @@ There are not so many java implementations of [simplex method][simplex]{:target=
 opinion the best one is [Apache Commons-math][commons-math]{:target="_blank"}. This library is huge and has a lof of 
 other implemented math algorithms including simplex method. However, I haven't found any library for getting intermediate
 solutions in simplex method, so I had to fork Apache commons-math and do it myself.
+![Polyhedron](/images/articles/simplex/simplex.png)
 
 ### The problem
 
