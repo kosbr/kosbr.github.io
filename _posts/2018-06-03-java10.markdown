@@ -1,0 +1,58 @@
+---
+layout: post
+title:  "Java9+ development"
+date:   2018-06-03 10:30:39 +0600
+categories:
+tags: Jigsaw
+---
+
+I've been listening many things about new releases of java and jigsaw feature for more than year. Sometimes it seems
+that you are the only one person who haven't tried java9 yet. Anyway, it is necessary to move with the times,
+ that's why I decided to use java 10 in some personal activities. By june 2018, I got following conclusions:
+
+* Jigsaw is cool and not complicated
+* Jigsaw will make you keep your packages in order
+* Almost everything is not ready for Jigsaw, migration features like automatic module won't help in complicated project
+* You won't get everything in order in your project in a moment. 
+* If your project is enough big, better not hurry... (actually always truth:))
+
+I worked with several java 10 projects. The first group is a number of almost similar microservices: maven spring boot 
+projects with several maven (java) modules. For example, one of them has REST endpoint, some business logic and 
+connection to postgres replica through spring-data. All of them were founded in java 10 from the beginning. Also, I decided to
+ move my simple [library][clihelper]{:target="_blank"} to java 10 as a simplest project. 
+
+### Jigsaw is cool and not complicated
+
+The main feature of java9 is a jigsaw system of java modules. A package and a classname now
+ define the only one class that you may use - the main advantage and pain of the new java. If it works, it provides:
+ 
+* Safety, you better know what is happening in your code by changing access settings
+* Order in dependencies. If two dependencies exports the same package, you have to exclude one by 
+dependency manager. Often it happens with different versions of the same libs. 
+* Advanced encapsulation
+
+However, it won't appear after you move to next java, because migration process is rather flexible and designed not 
+for getting it right now, better to say, it provides a proper direction. 
+
+### Jigsaw will make you keep your packages in order
+
+Since access to class is described on package level, a developer must design packages thinking about level of access for
+each one. I expect it will improve code quality (especially in enterprise) because everybody will have to pay attention to it. 
+
+### Almost everything is not ready for Jigsaw
+
+By the middle of 2018 almost all open source libs haven't migrated to module system yet. Jigsaw engineers tried 
+to simplify migration by using automatic modules. It means, if your code has old style dependency without java modules,
+this jar is considered as one java module. Your responsibility is to exclude all repeated packages from all imported modules
+by dependency manager. Sometimes it is impossible without broken application. For example, I couldn't add swagger to
+my spring boot application. I guess, that complicated projects may have many such points, so better wait until some
+ dependencies become modular. 
+
+Also I had troubles with travis and jitpack services. They do not support jdk 10, however they support jdk 9.
+### You won't get everything in order in your project in a moment
+
+Automatic module is reluctant instrument to provide migration. It is like cleaning some application from the top, but 
+leaving some dirty dependencies untouched. It looks good but we know what is inside :). Then updating such dependencies will remove unnecessary dependencies and make
+system more clean and elegant.  
+
+[clihelper]: https://github.com/kosbr/cli-helper
