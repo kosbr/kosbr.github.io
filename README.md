@@ -1,3 +1,7 @@
+## To say honestly I'm not happy with the current code quality of this project.
+
+But I don't have time to refactor it.
+
 ## Development environment 
 
 Clone project and perform following actions
