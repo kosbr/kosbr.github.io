@@ -9,7 +9,7 @@ tags: Kubernetes Microservices
 Everybody who worked with kubernetes knows how powerful and convenient it is. If you are an engineer, and 
 you need a kubernetes cluster for your personal purposes you may find it quite expensive. However you
 can save your money if you configure it by yourself.
-![DNA](/images/articles/cheapest-k8s/logo.jpg)
+![Kubernetes](/images/articles/cheapest-k8s/logo.jpg)
 
 ### Preconditions
 
@@ -303,5 +303,7 @@ That's it. Test it by redeploying instance to another node. It should be invisib
 - This is raw cluster. For example, you must install ingress to use it. It can be not simple.
 - **Only professionals should prepare kubernetes infrastructure for production projects. Or just use ready cloud solutions.**
 
+
+Read my another article [article](/2022/10/15/helm-best-practises.html) about bests practises of deploying to kubernetes.
 
 
